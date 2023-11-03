@@ -30,8 +30,8 @@
 							<li>2. The team must have a ChatGPT as well as a HackerRank account.</li>
 							<li>3. Spot registrations will be open during the event from 9:00 to 10:45. The first round will last around 15 to 20 minutes. You can try the first round anytime from 9:00 to 10:45 and then be on your way.</li>
 							<li>4. The first round will consist of 3 stages - AI Hallucination (making ChatGPT hallucinate), Coding using AI and Trivia.</li>
-							<li>6. Register here as individuals! Team name and details will be collected at the venue.</li>
-							<li>7. Once you register, you will be added to a WhatsApp group where we will inform you the rules of the event and we will answer your queries.</li>
+							<li>5. Register here as individuals! Team name and details will be collected at the venue.</li>
+							<li>6. Once you register, you will be added to a WhatsApp group where we will inform you the rules of the event and we will answer your queries.</li>
 						</ol>
 					</div>
 				</div>
