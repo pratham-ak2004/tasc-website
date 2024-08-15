@@ -4,18 +4,17 @@
 	import { Button } from '$lib/components/ui/custom_button';
 	import * as Popover from '$lib/components/ui/custom_popover';
 
-	import { auth, user, userData, userLoaded } from '$lib/firebase/firebase';
-
-	import { GoogleAuthProvider, signInWithPopup, signOut } from 'firebase/auth';
+	import { user, userData , userLoaded} from "$lib/auth/stores"
+	import { signIn, signOut } from "@auth/sveltekit/client"
+	
 
 	async function signInWithGoogle() {
-		const provider = new GoogleAuthProvider();
-		await signInWithPopup(auth, provider);
+		await signIn("google")
 		loggedIn = true;
 	}
 
 	async function signOutSSR() {
-		await signOut(auth);
+		await signOut();
 	}
 
 	let loggedIn = false;

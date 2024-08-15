@@ -5,6 +5,7 @@ type User = {
 	emailVerified: any;
 	image: string;
 
+	displayName: string | null;
 	bio: string | null;
 	phone: number | null;
 	username: string | null;
@@ -19,17 +20,17 @@ type User = {
 
 type UserData = {
 	id: string;
-	name: string;
-	email: string;
-	image: string;
+	displayName: string;
+	username: string;
+	usn: string | null;
 };
 
-type UserProfile = {
+type UserProfileData = {
 	id: string;
 
+	photoURL: string|null;
 	bio: string | null;
 	phone: number | null;
-	username: string | null;
 	usn: string | null;
 	lightTheme: string | null;
 	darkTheme: string | null;
@@ -38,5 +39,5 @@ type UserProfile = {
 export { 
     type User, 
     type UserData, 
-    type UserProfile 
+    type UserProfileData
 };

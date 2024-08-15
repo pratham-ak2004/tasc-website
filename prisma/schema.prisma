@@ -10,10 +10,10 @@ generator client {
 
 datasource db {
   //Local database
-  // provider = "postgresql"
+  provider = "postgresql"
 
   // Prod
-  provider = "cockroachdb"
+  // provider = "cockroachdb"
   url = env("DATABASE_URL")
 }
 
@@ -26,6 +26,7 @@ model User {
   accounts      Account[]
   sessions      Session[]
 
+  displayName String?
   bio        String?
   phone      String?
   username   String?

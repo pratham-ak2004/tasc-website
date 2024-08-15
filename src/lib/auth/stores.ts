@@ -1,5 +1,5 @@
-import { writable, derived } from 'svelte/store';
-import { type User, type UserData, type UserProfile } from './types';
+import { writable, derived, type Readable } from 'svelte/store';
+import { type User, type UserData, type UserProfileData } from './types';
 
 function setUser(data: { session: any }) {
 	if (data.session === null) {
@@ -13,38 +13,37 @@ const user = writable<User | null>(null);
 
 const userLoaded = writable(false);
 
-const userData = derived(user, ($user, set) => {
-	if ($user === null) {
+const userData:Readable<UserData | null> = derived(user, ($user, set) => {
+
+	if ($user === null || $user.username === null) {
 		set(null);
 	} else {
 		const data: UserData = {
 			id: $user.id,
-			name: $user.name,
-			email: $user.email,
-			image: $user.image
+			displayName: $user.displayName || '',
+			username: $user.username || '',
+			usn: $user.usn || null
 		};
-
-        set(data);
+		set(data);
 	}
-    userLoaded.set(true);
+	userLoaded.set(true);
 });
 
-const userProfile = derived(user, ($user, set) => {
-
-    if($user === null) {
-        set(null);
-    } else {
-        const data: UserProfile = {
-            id: $user.id,
-            bio: $user.bio,
-            phone: $user.phone,
-            username: $user.username,
-            usn: $user.usn,
-            lightTheme: $user.lightTheme,
-            darkTheme: $user.darkTheme
-        }
-        set(data)
-    }
+const userProfileData:Readable<UserProfileData | null> = derived(user, ($user, set) => {
+	if ($user === null) {
+		set(null);
+	} else {
+		const data: UserProfileData = {
+            photoURL: $user.image,
+			id: $user.id,
+			bio: $user.bio,
+			phone: $user.phone,
+			usn: $user.usn,
+			lightTheme: $user.lightTheme,
+			darkTheme: $user.darkTheme
+		};
+		set(data);
+	}
 });
 
-export { user, userData, userProfile, setUser };
+export { user, userData, userProfileData, userLoaded, setUser };
