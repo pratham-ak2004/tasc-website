@@ -8,8 +8,7 @@
 	import Input from '$lib/components/ui/input/input.svelte';
 	import { Label } from '$lib/components/ui/label';
 
-	import { db, user, userData } from '$lib/firebase/firebase';
-	import { doc, collection, getDoc, setDoc, writeBatch } from 'firebase/firestore';
+	import { user, userData } from '$lib/auth/stores';
 
 	import { page } from '$app/stores';
 	let redirect = $page.url.searchParams.get('redirect') ?? '';
@@ -58,12 +57,17 @@
 		debounceTimer = setTimeout(async () => {
 			console.log('checking availability of', username);
 
-			// We are making a reference to a document in FireStore in the
-			// "usernames" collection where doc id = username
-			const ref = doc(db, 'usernames', username);
-			const exists = await getDoc(ref).then((doc) => doc.exists());
+			// const exists = await getDoc(ref).then((doc) => doc.exists());
+			// Migration to AuthJS and Prisma
+			const response = await fetch(`/api/username?name=${username}`, {
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/json'
+				}
+			});
+			const data = await response.json();
 
-			isAvailable = !exists;
+			isAvailable = !data.isExists;
 			loading = false;
 		}, 500);
 	}
@@ -72,35 +76,21 @@
 		if (isValidName && isValidUSN && isValidUsername) {
 			console.log('confirming username', username);
 
-			const batch = writeBatch(db);
-
-			// Create a new user document with an auto generated id
-			const newUserRef = doc(collection(db, 'user'));
-			batch.set(newUserRef, {
-				username: username,
-				name: name,
-				usn: usn,
-				createdAt: new Date().toISOString()
+			const response = await fetch(`/api/username?id=${$user?.id}`, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({
+					displayName: name,
+					usn: usn,
+					username: username,
+					phone: phone
+				})
 			});
+			const data = await response.json();
 
-			// Add the user to the auth collection
-			batch.set(doc(db, 'auth', $user!.uid), { user: newUserRef.id });
-
-			// Username is unique, so we are using it as the document id
-			batch.set(doc(db, 'usernames', username), { user: newUserRef.id });
-
-			// Create temporary user profile
-			batch.set(doc(db, 'profile', newUserRef.id), {
-				name: name,
-				usn: usn,
-				phone: isValidPhone ? phone : '',
-				username: username,
-				photoURL: $user!.photoURL,
-				bio: 'Hello! I am ' + name + '.',
-				createdAt: new Date().toISOString()
-			});
-
-			await batch.commit();
+			user.set(data.user);
 
 			username = '';
 			isAvailable = false;
@@ -123,7 +113,7 @@
 			<Card.Root class="max-w-2xl">
 				<Card.Header class="space-y-1">
 					<Card.Title class="text-3xl">Enter your details</Card.Title>
-					<h2 class="card-title">Welcome, {$user.displayName}</h2>
+					<h2 class="card-title">Welcome, {$user.name}</h2>
 					<Card.Description>You have successfully signed in. Now you can enter your details. Make sure to enter all your details correctly. Some of these details like your name cannot be changed later unless you contact the admins.</Card.Description>
 				</Card.Header>
 

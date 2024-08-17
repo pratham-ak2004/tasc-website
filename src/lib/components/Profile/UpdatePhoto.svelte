@@ -1,11 +1,10 @@
 <script lang="ts">
 	import { failure, success } from '$lib/components/Toast/toast';
-	import { db, storage, userID, userProfileData } from '$lib/firebase/firebase';
+	import { storage } from '$lib/firebase/firebase';
 	import LoadingSVG from '$lib/loader/rolling.svg';
 	import { cn } from '$lib/utils';
-	import { doc, updateDoc } from 'firebase/firestore';
 	import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
-	import { Input } from '../ui/input';
+	import { userProfileData, user } from '$lib/auth/stores';
 
 	let previewURL: string;
 	let uploading = false;
@@ -21,15 +20,29 @@
 			return;
 		} else {
 			previewURL = URL.createObjectURL(file);
-			const storageRef = ref(storage, `profile/${$userID!.user}/profile.png`);
+			const storageRef = ref(storage, `profile/${$user?.id}/profile.png`);
 			const result = await uploadBytes(storageRef, file);
 
 			const url = await getDownloadURL(result.ref);
 
-			await updateDoc(doc(db, 'profile', $userID!.user), { photoURL: url });
+			const response = await fetch('/api/username', {
+				method: 'PATCH',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({
+					id: $user?.id,
+					image: url
+				})
+			});
+			const data = await response.json();
 
-			// alert('Your profile photo has been updated!');
-			success('Your profile photo has been updated!');
+			if (data.data) {
+				// alert('Your profile photo has been updated!');
+				success('Your profile photo has been updated!');
+			} else {
+				failure('Failed to update profile photo');
+			}
 			uploading = false;
 		}
 	}

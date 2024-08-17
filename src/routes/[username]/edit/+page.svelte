@@ -9,14 +9,14 @@
 	import UpdatePhoto from '$lib/components/Profile/UpdatePhoto.svelte';
 	import Vectorall from '$lib/components/VectorBackground/vectorall.svelte';
 	import Separator from '$lib/components/ui/separator/separator.svelte';
-	import { userData, userProfileData } from '$lib/firebase/firebase';
+	import { userData, userProfileData } from '$lib/auth/stores';
 	import { darkTheme } from '$lib/stores/theme';
 </script>
 
 <svelte:body
 	use:backgroundColor={{
-		color_light: $userProfileData?.color_light ?? '',
-		color_dark: $userProfileData?.color_dark ?? '',
+		color_light: $userProfileData?.lightTheme ?? '',
+		color_dark: $userProfileData?.darkTheme ?? '',
 		darkTheme: $darkTheme
 	}}
 />
