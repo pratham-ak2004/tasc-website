@@ -33,6 +33,8 @@ model User {
   usn        String?
   lightTheme String?
   darkTheme  String?
+  links      String[]
+  achivements String[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
