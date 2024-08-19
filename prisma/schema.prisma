@@ -26,12 +26,15 @@ model User {
   accounts      Account[]
   sessions      Session[]
 
+  displayName String?
   bio        String?
   phone      String?
   username   String?
   usn        String?
   lightTheme String?
   darkTheme  String?
+  links      String[]
+  achivements String[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
