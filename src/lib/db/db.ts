@@ -1,9 +1,9 @@
 import { PrismaClient } from '@prisma/client';
-import { env } from '$lib/env';
+import { HOST_STATUS } from '$env/static/private';
 
 const createPrismaClient = () =>
 	new PrismaClient({
-		log: env.HOST_STATUS === 'development' ? ['query', 'error', 'warn'] : ['error']
+		log: HOST_STATUS === 'development' ? ['query', 'error', 'warn'] : ['error']
 	});
 
 const globalForPrisma = globalThis as unknown as {
@@ -12,4 +12,4 @@ const globalForPrisma = globalThis as unknown as {
 
 export const db = globalForPrisma.prisma ?? createPrismaClient();
 
-if (env.HOST_STATUS !== 'production') globalForPrisma.prisma = db;
+if (HOST_STATUS !== 'production') globalForPrisma.prisma = db;

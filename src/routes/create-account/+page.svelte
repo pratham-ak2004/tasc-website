@@ -100,96 +100,94 @@
 	}
 </script>
 
-<AuthCheck>
-	{#if $userData !== null}
-		{#if redirect !== ''}
-			{goto(redirect)}
-		{:else}
-			<!-- {goto('/' + $userData.username + '/edit')} -->
-			{goto('/')}
-		{/if}
-	{:else if $user}
-		<div class="m-2 flex min-h-screen items-center justify-center">
-			<Card.Root class="max-w-2xl">
-				<Card.Header class="space-y-1">
-					<Card.Title class="text-3xl">Enter your details</Card.Title>
-					<h2 class="card-title">Welcome, {$user.name}</h2>
-					<Card.Description>You have successfully signed in. Now you can enter your details. Make sure to enter all your details correctly. Some of these details like your name cannot be changed later unless you contact the admins.</Card.Description>
-				</Card.Header>
-
-				<form on:submit|preventDefault={createAccount}>
-					<Card.Content>
-						<div>
-							<Label class="text-xl" for="name">Name</Label>
-							<Input type="text" id="name" placeholder="Enter your full name" bind:value={name} class={!isValidName && isTouchedName ? 'bg-red-200 dark:bg-red-900' : ''} required />
-							<p class="mt-1 text-sm text-muted-foreground">This is the name that will appear on your certificates.</p>
-							{#if isTouchedName && !isValidName}
-								<div>
-									<p>The name you have entered is invalid.</p>
-									<p class="text-sm text-muted-foreground">Your name must begin with a Capital letter and shouldn't begin or end with a space.</p>
-								</div>
-							{/if}
-						</div>
-
-						<div class="mt-6">
-							<Label class="text-xl" for="usn">USN</Label>
-							<Input type="text" id="usn" placeholder="Enter your college USN" bind:value={usn} class={!isValidUSN && isTouchedUSN ? 'bg-red-200 dark:bg-red-900' : ''} required />
-							{#if isTouchedUSN && !isValidUSN}
-								<div class="mb-2">
-									<p>USN should contain only numbers and CAPITAL letters.</p>
-									<p class="text-sm text-muted-foreground">USN must be 2-14 characters long and alphanumeric (CAPITAL letters only)</p>
-								</div>
-							{/if}
-						</div>
-
-						<div class="mt-6">
-							<Label for="username" class="mt-10 text-xl">Username</Label>
-							<Input type="text" class="{!isValidUsername && isTouchedUsername ? 'bg-red-200 dark:bg-red-900' : ''} {isTakenUsername ? 'bg-yellow-200 dark:bg-yellow-700' : ''} {isAvailable && isValidUsername && !loading ? 'bg-green-300 dark:bg-green-800' : ''}" id="username" placeholder="Enter a username" bind:value={username} on:input={checkAvailability} required />
-							<p class="mt-1 text-sm text-muted-foreground">Your username is public and is used to access your profile page.</p>
-
-							{#if isTouchedUsername}
-								<div class="mt-4">
-									{#if loading}
-										<p>Checking availability of @{username}...</p>
-									{/if}
-
-									{#if !isValidUsername && isTouchedUsername}
-										<p class="mt-1 text-sm text-muted-foreground">Username must be 3-16 characters long and alphanumeric (small letters only)</p>
-									{/if}
-
-									{#if isValidUsername && !isAvailable && !loading}
-										<p>
-											@{username} is not available
-										</p>
-									{/if}
-
-									{#if isValidUsername && isAvailable}
-										<p class="text-green-500">@{username} is available</p>
-									{/if}
-								</div>
-							{/if}
-						</div>
-
-						<div class="mt-6">
-							<Label for="whatsapp" class="mt-10 text-xl">Phone Number</Label>
-							<Input type="text" class="{!isValidPhone && isTouchedPhone ? 'bg-red-200 dark:bg-red-900' : ''} {isValidPhone ? 'bg-green-300 dark:bg-green-800' : ''}" id="usn" placeholder="Enter your WhatsApp Phone Number" bind:value={phone} required />
-
-							{#if isTouchedPhone && !isValidPhone}
-								<div>
-									<p>Write your number as 10 digits with no other characters</p>
-								</div>
-							{/if}
-
-							<p class="mt-1 text-sm text-muted-foreground">We will use this number to contact you if necessary.</p>
-							<p class="mt-1 text-sm text-muted-foreground">You can also change this number in your account settings.</p>
-						</div>
-					</Card.Content>
-
-					<Card.Footer>
-						<Button class="w-full" type="submit">Submit</Button>
-					</Card.Footer>
-				</form>
-			</Card.Root>
-		</div>
+{#if $userData !== null}
+	{#if redirect !== ''}
+		{goto(redirect)}
+	{:else}
+		<!-- {goto('/' + $userData.username + '/edit')} -->
+		{goto('/')}
 	{/if}
-</AuthCheck>
+{:else if $user}
+	<div class="m-2 flex min-h-screen items-center justify-center">
+		<Card.Root class="max-w-2xl">
+			<Card.Header class="space-y-1">
+				<Card.Title class="text-3xl">Enter your details</Card.Title>
+				<h2 class="card-title">Welcome, {$user.name}</h2>
+				<Card.Description>You have successfully signed in. Now you can enter your details. Make sure to enter all your details correctly. Some of these details like your name cannot be changed later unless you contact the admins.</Card.Description>
+			</Card.Header>
+
+			<form on:submit|preventDefault={createAccount}>
+				<Card.Content>
+					<div>
+						<Label class="text-xl" for="name">Name</Label>
+						<Input type="text" id="name" placeholder="Enter your full name" bind:value={name} class={!isValidName && isTouchedName ? 'bg-red-200 dark:bg-red-900' : ''} required />
+						<p class="mt-1 text-sm text-muted-foreground">This is the name that will appear on your certificates.</p>
+						{#if isTouchedName && !isValidName}
+							<div>
+								<p>The name you have entered is invalid.</p>
+								<p class="text-sm text-muted-foreground">Your name must begin with a Capital letter and shouldn't begin or end with a space.</p>
+							</div>
+						{/if}
+					</div>
+
+					<div class="mt-6">
+						<Label class="text-xl" for="usn">USN</Label>
+						<Input type="text" id="usn" placeholder="Enter your college USN" bind:value={usn} class={!isValidUSN && isTouchedUSN ? 'bg-red-200 dark:bg-red-900' : ''} required />
+						{#if isTouchedUSN && !isValidUSN}
+							<div class="mb-2">
+								<p>USN should contain only numbers and CAPITAL letters.</p>
+								<p class="text-sm text-muted-foreground">USN must be 2-14 characters long and alphanumeric (CAPITAL letters only)</p>
+							</div>
+						{/if}
+					</div>
+
+					<div class="mt-6">
+						<Label for="username" class="mt-10 text-xl">Username</Label>
+						<Input type="text" class="{!isValidUsername && isTouchedUsername ? 'bg-red-200 dark:bg-red-900' : ''} {isTakenUsername ? 'bg-yellow-200 dark:bg-yellow-700' : ''} {isAvailable && isValidUsername && !loading ? 'bg-green-300 dark:bg-green-800' : ''}" id="username" placeholder="Enter a username" bind:value={username} on:input={checkAvailability} required />
+						<p class="mt-1 text-sm text-muted-foreground">Your username is public and is used to access your profile page.</p>
+
+						{#if isTouchedUsername}
+							<div class="mt-4">
+								{#if loading}
+									<p>Checking availability of @{username}...</p>
+								{/if}
+
+								{#if !isValidUsername && isTouchedUsername}
+									<p class="mt-1 text-sm text-muted-foreground">Username must be 3-16 characters long and alphanumeric (small letters only)</p>
+								{/if}
+
+								{#if isValidUsername && !isAvailable && !loading}
+									<p>
+										@{username} is not available
+									</p>
+								{/if}
+
+								{#if isValidUsername && isAvailable}
+									<p class="text-green-500">@{username} is available</p>
+								{/if}
+							</div>
+						{/if}
+					</div>
+
+					<div class="mt-6">
+						<Label for="whatsapp" class="mt-10 text-xl">Phone Number</Label>
+						<Input type="text" class="{!isValidPhone && isTouchedPhone ? 'bg-red-200 dark:bg-red-900' : ''} {isValidPhone ? 'bg-green-300 dark:bg-green-800' : ''}" id="usn" placeholder="Enter your WhatsApp Phone Number" bind:value={phone} required />
+
+						{#if isTouchedPhone && !isValidPhone}
+							<div>
+								<p>Write your number as 10 digits with no other characters</p>
+							</div>
+						{/if}
+
+						<p class="mt-1 text-sm text-muted-foreground">We will use this number to contact you if necessary.</p>
+						<p class="mt-1 text-sm text-muted-foreground">You can also change this number in your account settings.</p>
+					</div>
+				</Card.Content>
+
+				<Card.Footer>
+					<Button class="w-full" type="submit">Submit</Button>
+				</Card.Footer>
+			</form>
+		</Card.Root>
+	</div>
+{/if}

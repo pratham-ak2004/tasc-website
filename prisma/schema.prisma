@@ -10,9 +10,8 @@ generator client {
 
 datasource db {
   //Local database
-  provider = "postgresql"
+  provider = "cockroachdb"
 
-  // Prod
   // provider = "cockroachdb"
   url = env("DATABASE_URL")
 }
@@ -26,19 +25,22 @@ model User {
   accounts      Account[]
   sessions      Session[]
 
-  displayName String?
-  bio        String?
-  phone      String?
-  username   String?
-  usn        String?
-  lightTheme String?
-  darkTheme  String?
-  links      String[]
-  achivements String[]
+  displayName  String?
+  bio          String?
+  phone        String?
+  username     String?
+  college      String?  @default("N.M.A.M. Institute of Technology")
+  usn          String?
+  lightTheme   String?
+  darkTheme    String?
+  role         String?  @default("user")
+  links        Links?
+  organizers   Event[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   Core      Core[]
+  Team      Team[]
 }
 
 model Account {
@@ -72,20 +74,15 @@ model Session {
   updatedAt DateTime @updatedAt
 }
 
-model VerificationToken {
-  identifier String
-  token      String
-  expires    DateTime
-
-  @@id([identifier, token])
-}
-
 model Core {
-  id       String @id @default(cuid())
+  id       String  @id @default(cuid())
   year     String
-  position String
-  User     User   @relation(fields: [userId], references: [id])
+  post     String
+  image    String
+  quote    String?
+  User     User    @relation(fields: [userId], references: [id])
 
+  order  Int     
   userId String
 }
 
@@ -95,6 +92,7 @@ model Faculty {
   name        String
   email       String
   designation String
+  designation2 String?
   image       String
   about       String[]
 
@@ -102,4 +100,61 @@ model Faculty {
   published Boolean @default(false)
 
   @@index([name], name: "name_index")
+}
+
+model Event {
+  id String @id @default(cuid())
+
+  title        String
+  description  String?
+  image        String
+  date         DateTime
+  time         String?
+  reportLink   String?
+  venue        String?
+  category     String
+  participants Team[]
+  winners      Winners[]
+  organizers   User[]
+  guests       String[]
+  published    Boolean   @default(false)
+}
+
+model Links {
+  id String @id @default(cuid())
+
+  instagram String?
+  twitter   String?
+  linkedin  String?
+  github    String?
+  custom1   String?
+  custom2   String?
+  custom3   String?
+  custom4   String?
+  order     String[]
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId String @unique
+}
+
+model Team {
+  id String @id @default(cuid())
+
+  user     User[]
+  event    Event     @relation(fields: [eventId], references: [id])
+  winner   Winners[]
+  attended Boolean   @default(false)
+
+  eventId String
+}
+
+model Winners {
+  id String @id @default(cuid())
+
+  position Int
+  teamId   String
+  eventId  String
+
+  event Event @relation(fields: [eventId], references: [id])
+  team  Team  @relation(fields: [teamId], references: [id])
 }

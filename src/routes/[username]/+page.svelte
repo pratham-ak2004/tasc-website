@@ -6,9 +6,7 @@
 	import Vectorall from '$lib/components/VectorBackground/vectorall.svelte';
 	import Separator from '$lib/components/ui/separator/separator.svelte';
 	import { darkTheme } from '$lib/stores/theme';
-	import { json } from '@sveltejs/kit';
 	import type { PageData } from './$types';
-	import VectorBr from '$lib/components/VectorBackground/vectorBR.svelte';
 
 	export let data: PageData & any;
 </script>
@@ -33,7 +31,7 @@
 		{:else}
 			<img src={'/fallback-image.jpg'} alt="photoURL" class="aspect-square w-32 rounded-full object-cover md:w-52" />
 		{/if}
-		<h1 class="text-center text-lg font-bold md:text-2xl">{data.name}</h1>
+		<h1 class="text-center text-lg font-bold md:text-2xl">{data.displayName}</h1>
 		<Separator class="h-[0.5px] w-2/3 bg-primary" />
 		<p class="mb-2 text-center text-sm text-muted md:text-base">{data.bio ?? 'No bio yet'}</p>
 		<EditButton currentUsername={data.username ?? null} />
