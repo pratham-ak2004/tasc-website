@@ -1,10 +1,13 @@
 import { writable, derived, type Readable } from 'svelte/store';
 import { type User, type UserData, type UserProfileData } from './types';
 
-function setUser(data: { session: any }) {
+let links: any = null;
+
+function setUser(data: { session: any, links: any }) {
 	if (data.session === null) {
 		user.set(null);
 	} else {
+		links = data.links;
 		user.set(data.session.user);
 	}
 }
@@ -39,6 +42,13 @@ const userProfileData:Readable<UserProfileData | null> = derived(user, ($user, s
 			bio: $user.bio,
 			phone: $user.phone,
 			usn: $user.usn,
+			college: $user.college,
+			instagram: links?.instagram,
+			linkedin: links?.linkedin,
+			github: links?.github,
+			twitter: links?.twitter,
+			custom: links?.custom || {},
+			order: links?.order || [],
 			lightTheme: $user.lightTheme,
 			darkTheme: $user.darkTheme
 		};

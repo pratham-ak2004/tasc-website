@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { userProfileData, user } from '$lib/auth/stores';
+	import { userProfileData, user, setUser } from '$lib/auth/stores';
 	import { exclaim, failure, success } from '../Toast/toast';
 	import Button from '../ui/custom_button/button.svelte';
 	import Input from '../ui/input/input.svelte';
@@ -31,6 +31,8 @@
 
 		if (data.data) {
 			success('Updated Phone successfully');
+			phone = '';
+			setTimeout(() => { setUser(data.data) }, 3000)
 		} else {
 			failure('Failed to update Phone');
 		}

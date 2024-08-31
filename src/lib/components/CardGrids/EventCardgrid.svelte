@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type EventData from '../types/EventData';
+	import type EventData from '$lib/types/EventData';
 
 	const options: Intl.DateTimeFormatOptions = {
 		day: 'numeric',
@@ -21,7 +21,7 @@
 				</div>
 				<h1 class="py-4 text-center text-2xl font-bold">{event.title}</h1>
 				{#if event.date}
-					<h2 class="text-center text-xl">Date: {event.date.toDate().toLocaleDateString(undefined, options)}</h2>
+					<h2 class="text-center text-xl">Date: {event.date.toLocaleDateString(undefined, options)}</h2>
 				{/if}
 				{#if event.time}
 					<h2 class="text-center text-xl">Time: {event.time}</h2>
@@ -31,11 +31,11 @@
 				{/if}
 
 				<div class="flex items-center justify-center pt-4">
-					{#if event.registrationLink}
+					<!-- {#if event.registrationLink}
 						<a href={event.registrationLink} target="_blank">
 							<button class="rounded-xl bg-brand px-4 py-2 text-white duration-200 hover:scale-110"> Register Now </button>
 						</a>
-					{/if}
+					{/if} -->
 					<!-- <button class="rounded-xl bg-brand px-4 py-2 text-white">Registration Closed! Spot Registrations are Available</button> -->
 				</div>
 			</div>

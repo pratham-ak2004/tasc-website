@@ -1,4 +1,4 @@
-import { db } from '$lib/db/db.js';
+import { db } from '$lib/db/db';
 
 export async function GET({ url }) {
 	const username = url.searchParams.get('name') || null;
@@ -33,10 +33,10 @@ export async function POST({ request, url }) {
 				displayName: data.displayName,
 				username: data.username,
 				usn: data.usn,
-				phone: data.phone
+				phone: data.phone,
+				bio: `Hello! I am ${data.displayName}.`
 			}
 		});
-		console.log(dbData);
 
 		return new Response(JSON.stringify({ message: 'done', user: dbData }), { status: 200 });
 	} else {
@@ -58,7 +58,8 @@ export async function PATCH({ request }) {
 	});
 
 	if (dbData) {
-		return new Response(JSON.stringify({ message: 'done', data: dbData }), { status: 200 });
+		const links = await db.links.findUnique({ where: { userId: id } });
+		return new Response(JSON.stringify({ message: 'Done', data: { session: { user: dbData }, links: links } }), { status: 200 });
 	}else{
 		return new Response(JSON.stringify({ message: 'Not Done', data: null }), { status: 200 });
 	}

@@ -31,7 +31,7 @@
 		<Popover.Content>
 			<div class="flex max-w-xs flex-col gap-2">
 				<div class="px-2 text-lg text-center">
-					Hello <span class="font-semibold">{$userData.name}</span>
+					Hello <span class="font-semibold">{$userData?.displayName}</span>
 				</div>
 				<a href="/{$userData.username}" class="contents"> <Button class="border bg-transparent text-primary" variant={'secondary'}>Your Public Profile</Button> </a>
 				<a href="/{$userData.username}/edit" class="contents"><Button class="border bg-transparent text-primary" variant={'secondary'}>Edit Profile</Button></a>

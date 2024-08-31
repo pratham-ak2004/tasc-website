@@ -9,6 +9,7 @@ type User = {
 	bio: string | null;
 	phone: number | null;
 	username: string | null;
+	college: string | null;
 	usn: string | null;
 
 	lightTheme: string | null;
@@ -32,8 +33,16 @@ type UserProfileData = {
 	bio: string | null;
 	phone: number | null;
 	usn: string | null;
+	college: string | null;
 	lightTheme: string | null;
 	darkTheme: string | null;
+	instagram: string | null;
+	linkedin: string | null;
+	github: string | null;
+	twitter: string | null;
+	custom: {[key: string]: string} | null;
+	order: string[];
+	[key: string]: any
 };
 
 export { 
