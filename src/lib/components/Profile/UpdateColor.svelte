@@ -4,7 +4,7 @@
 	import Label from '$lib/components/ui/label/label.svelte';
 	// import { db, userID, userProfileData } from '$lib/firebase/firebase';
 	// import { doc, updateDoc } from 'firebase/firestore';
-	import { user, userProfileData } from '$lib/auth/stores';
+	import { user, userProfileData, setUser } from '$lib/auth/stores';
 	import { information, success, failure } from '../Toast/toast';
 
 	let color_light: string = $userProfileData?.lightTheme ?? '';
@@ -33,7 +33,8 @@
 		const data = await response.json();
 
 		if (data.data) {
-			success('Updated Phone successfully');
+			success('Updated Color successfully');
+			setTimeout(() => { setUser(data.data) }, 3000);
 		} else {
 			failure('Failed to update Phone');
 		}

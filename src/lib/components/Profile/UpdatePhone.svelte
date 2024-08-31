@@ -32,6 +32,7 @@
 		if (data.data) {
 			success('Updated Phone successfully');
 			phone = '';
+			setTimeout(() => { setUser(data.data) }, 3000)
 		} else {
 			failure('Failed to update Phone');
 		}

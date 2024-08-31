@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { user, userProfileData } from '$lib/auth/stores';
+	import { user, userProfileData, setUser } from '$lib/auth/stores';
 	import { exclaim, success, failure } from '../Toast/toast';
 	import Button from '../ui/custom_button/button.svelte';
 	import Label from '../ui/label/label.svelte';
@@ -25,8 +25,9 @@
 		const data = await response.json();
 
 		if (data.data) {
+			success('Updated Bio successfully');
 			bio = '';
-			success('Updated Phone successfully');
+			setTimeout(() => { setUser(data.data) }, 3000);
 		} else {
 			failure('Failed to update Phone');
 		}

@@ -4,7 +4,7 @@
 	import LoadingSVG from '$lib/loader/rolling.svg';
 	import { cn } from '$lib/utils';
 	import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
-	import { userProfileData, user } from '$lib/auth/stores';
+	import { userProfileData, user, setUser } from '$lib/auth/stores';
 
 	let previewURL: string;
 	let uploading = false;
@@ -38,7 +38,6 @@
 			const data = await response.json();
 
 			if (data.data) {
-				// alert('Your profile photo has been updated!');
 				success('Your profile photo has been updated!');
 			} else {
 				failure('Failed to update profile photo');

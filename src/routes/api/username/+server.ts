@@ -58,7 +58,8 @@ export async function PATCH({ request }) {
 	});
 
 	if (dbData) {
-		return new Response(JSON.stringify({ message: 'Done', data: dbData }), { status: 200 });
+		const links = await db.links.findUnique({ where: { userId: id } });
+		return new Response(JSON.stringify({ message: 'Done', data: { session: { user: dbData }, links: links } }), { status: 200 });
 	}else{
 		return new Response(JSON.stringify({ message: 'Not Done', data: null }), { status: 200 });
 	}

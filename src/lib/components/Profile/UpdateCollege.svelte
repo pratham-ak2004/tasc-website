@@ -1,7 +1,7 @@
 <script lang="ts">
 	// import { db, userID, userProfileData } from '$lib/firebase/firebase';
 	// import { doc, updateDoc } from 'firebase/firestore';
-	import { user, userProfileData } from '$lib/auth/stores';
+	import { user, userProfileData, setUser } from '$lib/auth/stores';
 	import { exclaim, success, failure } from '../Toast/toast';
 	import Button from '../ui/custom_button/button.svelte';
 	import Input from '../ui/input/input.svelte';
@@ -32,8 +32,9 @@
 		const data = await response.json();
 
 		if (data.data) {
+			success('Updated College successfully');
 			college = '';
-			success('Updated Phone successfully');
+			setTimeout(() => { setUser(data.data) }, 3000);
 		} else {
 			failure('Failed to update Phone');
 		}

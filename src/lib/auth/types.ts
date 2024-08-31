@@ -40,11 +40,9 @@ type UserProfileData = {
 	linkedin: string | null;
 	github: string | null;
 	twitter: string | null;
-	custom1: string | null;
-	custom2: string | null;
-	custom3: string | null;
-	custom4: string | null;
-	order: string[]
+	custom: {[key: string]: string} | null;
+	order: string[];
+	[key: string]: any
 };
 
 export { 

@@ -47,10 +47,7 @@ const userProfileData:Readable<UserProfileData | null> = derived(user, ($user, s
 			linkedin: links?.linkedin,
 			github: links?.github,
 			twitter: links?.twitter,
-			custom1: links?.custom1,
-			custom2: links?.custom2,
-			custom3: links?.custom3,
-			custom4: links?.custom4,
+			custom: links?.custom || {},
 			order: links?.order || [],
 			lightTheme: $user.lightTheme,
 			darkTheme: $user.darkTheme
