@@ -1,5 +1,8 @@
 <script lang="ts">
     import { page } from '$app/stores';
+    // console.log($page.data.body.publications[0].name);
+    // let name= $page.data.body.publications[0].name;
+    let { publications } = $page.data.body;
 	import PublicationCardGrid from '$lib/components/CardGrids/PublicationCardGrid.svelte';
     let year = $page.params.year;
 </script>
@@ -19,5 +22,7 @@
             <button class={`text-md sm:text-xl md:text-2xl ${year === '2024' ? 'underline underline-offset-4' : 'no-underline'}`}> 2024-25 </button>
         </a>
         </div>
-    <PublicationCardGrid year={year} />
+    <PublicationCardGrid year={year} publicationss={publications}/>
+
+    <!-- <p>{name}</p> -->
 </div>

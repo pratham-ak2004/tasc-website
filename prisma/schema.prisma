@@ -10,7 +10,7 @@ generator client {
 
 datasource db {
   //Local database
-  provider = "cockroachdb"
+  provider = "postgresql"
 
   // provider = "cockroachdb"
   url = env("DATABASE_URL")
@@ -25,17 +25,17 @@ model User {
   accounts      Account[]
   sessions      Session[]
 
-  displayName  String?
-  bio          String?
-  phone        String?
-  username     String?
-  college      String?  @default("N.M.A.M. Institute of Technology")
-  usn          String?
-  lightTheme   String?
-  darkTheme    String?
-  role         String?  @default("user")
-  links        Links?
-  organizers   Event[]
+  displayName String?
+  bio         String?
+  phone       String?
+  username    String?
+  college     String? @default("N.M.A.M. Institute of Technology")
+  usn         String?
+  lightTheme  String?
+  darkTheme   String?
+  role        String? @default("user")
+  links       Links?
+  organizers  Event[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -75,26 +75,26 @@ model Session {
 }
 
 model Core {
-  id       String  @id @default(cuid())
-  year     String
-  post     String
-  image    String
-  quote    String?
-  User     User    @relation(fields: [userId], references: [id])
+  id    String  @id @default(cuid())
+  year  String
+  post  String
+  image String
+  quote String?
+  User  User    @relation(fields: [userId], references: [id])
 
-  order  Int     
+  order  Int
   userId String
 }
 
 model Faculty {
   id String @id @default(cuid())
 
-  name        String
-  email       String
-  designation String
+  name         String
+  email        String
+  designation  String
   designation2 String?
-  image       String
-  about       String[]
+  image        String
+  about        String[]
 
   order     Int     @unique
   published Boolean @default(false)
@@ -154,4 +154,36 @@ model Winners {
 
   event Event @relation(fields: [eventId], references: [id])
   team  Team  @relation(fields: [teamId], references: [id])
+}
+
+model Year {
+  id           Int           @id @default(autoincrement())
+  year         String
+  publications Publication[]
+}
+
+model Publication {
+  id                   Int      @id @default(autoincrement())
+  name                 String
+  designation          String
+  authors              Author[]
+  title                String
+  month_year           String
+  ranking              String?
+  impact_factor        String?
+  publisher            String?
+  indexed              String
+  publisher_conference String?
+  journal              String?
+  conference           String?
+  link                 String
+  yearId               Int
+  year                 Year     @relation(fields: [yearId], references: [id])
+}
+
+model Author {
+  id            Int         @id @default(autoincrement())
+  name          String
+  publicationId Int
+  publication   Publication @relation(fields: [publicationId], references: [id])
 }

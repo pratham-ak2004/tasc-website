@@ -3,6 +3,7 @@
     import type { Publication, PublicationDetails } from "$lib/components/types/AchievementData";
     import PublicationCard from '$lib/components/Card/PublicationCard.svelte';
     export let year: string;
+    export let publicationss;
 
     let publications: Publication[] = PUBLICATION_DETAILS.find((publication: PublicationDetails) => publication.year === year)?.publications || [];
     
@@ -19,5 +20,5 @@
 </script>
 
 <div class="px-4 md:py-5 py-0">
-    <PublicationCard faculty={publicationsByFaculty} titles={publicationsByTitle} publications={publications} />
+    <PublicationCard faculty={publicationsByFaculty} titles={publicationsByTitle} publications={publications} publicationss={publicationss}/>
 </div>
