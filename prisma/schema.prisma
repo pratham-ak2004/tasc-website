@@ -156,7 +156,7 @@ model Winners {
 }
 
 model Publication {
-  id                   Int       @id @default(sequence())
+  id                   String        @id @default(cuid())
   facultyId            String?
   authors              String[]
   title                String
