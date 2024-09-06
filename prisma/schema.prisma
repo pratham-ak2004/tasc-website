@@ -10,7 +10,7 @@ generator client {
 
 datasource db {
   //Local database
-  provider = "postgresql"
+  provider = "cockroachdb"
 
   // provider = "cockroachdb"
   url = env("DATABASE_URL")
@@ -87,17 +87,16 @@ model Core {
 }
 
 model Faculty {
-  id String @id @default(cuid())
-
+  id           String        @id @default(cuid())
   name         String
   email        String
   designation  String
   designation2 String?
   image        String
   about        String[]
-
-  order     Int     @unique
-  published Boolean @default(false)
+  publications Publication[] @relation("FacultyPublications")
+  order        Int           @unique
+  published    Boolean       @default(false)
 
   @@index([name], name: "name_index")
 }
@@ -156,34 +155,21 @@ model Winners {
   team  Team  @relation(fields: [teamId], references: [id])
 }
 
-model Year {
-  id           Int           @id @default(autoincrement())
-  year         String
-  publications Publication[]
-}
-
 model Publication {
-  id                   Int      @id @default(autoincrement())
-  name                 String
-  designation          String
-  authors              Author[]
+  id                   Int       @id @default(sequence())
+  facultyId            String?
+  authors              String[]
   title                String
-  month_year           String
-  ranking              String?
-  impact_factor        String?
+  publish_date         String
   publisher            String?
-  indexed              String
-  publisher_conference String?
   journal              String?
   conference           String?
   link                 String
-  yearId               Int
-  year                 Year     @relation(fields: [yearId], references: [id])
+  ranking              String?
+  impact_factor        String?
+  indexed              String
+  publisher_conference String?
+  year                 Int
+  faculty              Faculty[] @relation("FacultyPublications")
 }
 
-model Author {
-  id            Int         @id @default(autoincrement())
-  name          String
-  publicationId Int
-  publication   Publication @relation(fields: [publicationId], references: [id])
-}
