@@ -3,6 +3,6 @@
 	import Navbar from '$lib/components/Hkl/Navbar.svelte';
 </script>
 
-<Navbar />
+<!-- <Navbar /> -->
 <slot />
-<Footer />
+<!-- <Footer /> -->

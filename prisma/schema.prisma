@@ -159,7 +159,7 @@ model Winners {
   team  Team  @relation(fields: [teamId], references: [id])
 }
 
-model Students {
+model Student {
   id String @id @default(cuid())
 
   name    String
@@ -175,7 +175,7 @@ model Patents {
   faculty          Faculty[]  @relation("FacultyPatents")
   title            String
   authors          String[]
-  students         Students[] @relation("StudentPatents")
+  students         Student[] @relation("StudentPatents")
   inventorsName    String[]
   inventorsAddress String?
   certificate      String?
