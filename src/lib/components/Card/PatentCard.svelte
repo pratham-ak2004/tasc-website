@@ -1,71 +1,72 @@
 <script lang="ts">
-	import type { Patent } from "$lib/components/types/AchievementData";
-	import { NAME_TO_IMAGE as images } from "$lib/data/Images";
-	import { darkTheme } from "$lib/stores/theme";
+	import type { Patent } from '$lib/components/types/AchievementData';
+	import { NAME_TO_IMAGE as images } from '$lib/data/Images';
+	import { darkTheme } from '$lib/stores/theme';
 
 	export let patents: Patent[];
-    let theme: string = 'dark';
+	console.log(patents);
+	let theme: string = 'dark';
 
-    $: darkTheme.subscribe(value => {
-        if (value) theme = 'dark';
-        else theme = 'light';
-    })
+	$: darkTheme.subscribe((value) => {
+		if (value) theme = 'dark';
+		else theme = 'light';
+	});
 </script>
 
-<div class={`h-full w-full grid sm:space-y-10 space-y-4 ${theme}`}>
+<div class={`grid h-full w-full space-y-4 sm:space-y-10 ${theme}`}>
 	{#each patents as patent}
-		<div class="sm:w-[80%] w-[95%] justify-self-center bg-card border-2 border-blue-900 sm:p-4 p-1 rounded-2xl shadow-xl dark:custom-shadow-black">
-			<p class="text-center lg:text-3xl md:text-2xl sm:text-lg text-xs sm:font-semibold font-bold underline md:underline-offset-4 underline-offset-2 dark:text-yellow-300 text-black">{patent.title}</p>
-			{#if images.find(n => n.name === patent.id)}
-				<div class="grid w-full my-5"><img src={images.find(n => n.name === patent.id)?.image} class="sm:w-[60%] w-[80%] justify-self-center" alt=""></div>
+		<div class="dark:custom-shadow-black w-[95%] justify-self-center rounded-2xl border-2 border-blue-900 bg-card p-1 shadow-xl sm:w-[80%] sm:p-4">
+			<p class="text-center text-xs font-bold text-black underline underline-offset-2 dark:text-yellow-300 sm:text-lg sm:font-semibold md:text-2xl md:underline-offset-4 lg:text-3xl">{patent.title}</p>
+			{#if images.find((n) => n.name === patent.id)}
+				<div class="my-5 grid w-full"><img src={images.find((n) => n.name === patent.id)?.image} class="w-[80%] justify-self-center sm:w-[60%]" alt="" /></div>
 			{/if}
-			{#if !(images.find(n => n.name === patent.id))}
-				<div class="grid grid-cols-10 md:p-6 py-2">
-					<p class="sm:col-span-2 col-span-3 self-center text-center lg:text-xl md:text-lg sm:text-md text-xs dark:text-white text-black">Faculty</p>
-					<p class="col-span-1 self-center text-center lg:text-xl md:text-lg sm:text-md text-xs dark:text-white text-black">:</p>
-					<div class="sm:col-span-7 col-span-6 flex justify-around sm:space-x-4">
+			{#if !images.find((n) => n.name === patent.id)}
+				<div class="grid grid-cols-10 py-2 md:p-6">
+					<p class="sm:text-md col-span-3 self-center text-center text-xs text-black dark:text-white sm:col-span-2 md:text-lg lg:text-xl">Faculty</p>
+					<p class="sm:text-md col-span-1 self-center text-center text-xs text-black dark:text-white md:text-lg lg:text-xl">:</p>
+					<div class="col-span-6 flex justify-around sm:col-span-7 sm:space-x-4">
 						{#each patent.faculty as teacher}
-							<div class="justify-self-center grid w-[30%]">
-								<img src={images.find(n => n.name === teacher)?.image||''} class="lg:h-[9rem] md:h-[7rem] sm:h-[5rem] h-[3rem] justify-self-center" alt="">
-								<div class="justify-center items-center"><p class="text-center lg:text-lg md:text-md sm:text-sm text-xs dark:text-white text-black">{teacher}</p></div>
+							<div class="grid w-[30%] justify-self-center">
+								<img src={images.find((n) => n.name === teacher)?.image || ''} class="h-[3rem] justify-self-center rounded-md sm:h-[5rem] md:h-[7rem] lg:h-[9rem]" alt="" />
+								<div class="items-center justify-center"><p class="md:text-md text-center text-xs text-black dark:text-white sm:text-sm lg:text-lg">{teacher}</p></div>
 							</div>
 						{/each}
 					</div>
 				</div>
 			{/if}
 			{#if patent.students}
-				<div class="grid grid-cols-10 md:p-6 py-2">
-					<p class="sm:col-span-2 col-span-3 self-center text-center lg:text-xl md:text-lg sm:text-md text-xs dark:text-white text-black">Students</p>
-					<p class="col-span-1 self-center text-center lg:text-xl md:text-lg sm:text-md text-xs dark:text-white text-black">:</p>
-					<div class="sm:col-span-7 col-span-6 flex justify-around sm:space-x-4">
+				<div class="grid grid-cols-10 py-2 md:p-6">
+					<p class="sm:text-md col-span-3 self-center text-center text-xs text-black dark:text-white sm:col-span-2 md:text-lg lg:text-xl">Students</p>
+					<p class="sm:text-md col-span-1 self-center text-center text-xs text-black dark:text-white md:text-lg lg:text-xl">:</p>
+					<div class="col-span-6 flex justify-around sm:col-span-7 sm:space-x-4">
 						{#each patent.students as student}
-							<div class={`justify-self-center grid w-[30%]`}>
-								<img src='/user1.png' class="lg:h-[9rem] md:h-[7rem] sm:h-[5rem] h-[3rem] justify-self-center" alt="">
-								<div class="justify-center items-center"><p class="text-center lg:text-lg md:text-md sm:text-sm text-xs dark:text-white text-black">{student}</p></div>
+							<div class={`grid w-[30%] justify-self-center`}>
+								<img src="/user1.png" class="h-[3rem] justify-self-center sm:h-[5rem] md:h-[7rem] lg:h-[9rem]" alt="" />
+								<div class="items-center justify-center"><p class="md:text-md text-center text-xs text-black dark:text-white sm:text-sm lg:text-lg">{student}</p></div>
 							</div>
 						{/each}
 					</div>
 				</div>
 			{:else if patent.inventors}
-				<div  class="sm:grid grid-cols-10 md:p-6 py-2">
-					<p class="sm:col-span-2 col-span-3 self-center text-center lg:text-xl md:text-lg sm:text-md text-xs dark:text-white text-black">In collaboration with</p>
-					<p class="col-span-1 self-center text-center lg:text-xl md:text-lg sm:text-md text-xs hidden sm:block dark:text-white text-black">:</p>
+				<div class="grid-cols-10 py-2 sm:grid md:p-6">
+					<p class="sm:text-md col-span-3 self-center text-center text-xs text-black dark:text-white sm:col-span-2 md:text-lg lg:text-xl">In collaboration with</p>
+					<p class="sm:text-md col-span-1 hidden self-center text-center text-xs text-black dark:text-white sm:block md:text-lg lg:text-xl">:</p>
 					<div class="col-span-7">
 						{#each patent.inventors as inventor}
 							<div class="grid grid-cols-3 space-y-1">
-								<p class="lg:text-lg md:text-md sm:text-sm text-xs self-center dark:text-white text-black">{inventor.address}</p>
-								<p class="lg:text-lg md:text-md sm:text-sm text-xs self-center text-center dark:text-white text-black">-</p>
-								<p class="lg:text-lg md:text-md sm:text-sm text-xs self-center dark:text-white text-black">{inventor.names.map(name => name).join(', ')}</p>
+								<p class="md:text-md self-center text-xs text-black dark:text-white sm:text-sm lg:text-lg">{inventor.address}</p>
+								<p class="md:text-md self-center text-center text-xs text-black dark:text-white sm:text-sm lg:text-lg">-</p>
+								<p class="md:text-md self-center text-xs text-black dark:text-white sm:text-sm lg:text-lg">{inventor.names.map((name) => name).join(', ')}</p>
 							</div>
 						{/each}
 					</div>
 				</div>
 			{:else if patent.authors}
-				<div class="grid grid-cols-10 md:p-6 py-2">
-					<p class="sm:col-span-2 col-span-3 self-center text-center lg:text-xl md:text-lg sm:text-md text-xs dark:text-white text-black">Collaborated with</p>
-					<p class="col-span-1 self-center text-center lg:text-xl md:text-lg sm:text-md text-xs dark:text-white text-black">:</p>
-					<div class="sm:col-span-7 col-span-6 grid ">
-						<p class="lg:text-lg md:text-md sm:text-sm text-xs text-center self-center dark:text-white text-black">{patent.authors.map(author => author).join(',  ')}</p>
+				<div class="grid grid-cols-10 py-2 md:p-6">
+					<p class="sm:text-md col-span-3 self-center text-center text-xs text-black dark:text-white sm:col-span-2 md:text-lg lg:text-xl">Collaborated with</p>
+					<p class="sm:text-md col-span-1 self-center text-center text-xs text-black dark:text-white md:text-lg lg:text-xl">:</p>
+					<div class="col-span-6 grid sm:col-span-7">
+						<p class="md:text-md self-center text-center text-xs text-black dark:text-white sm:text-sm lg:text-lg">{patent.authors.map((author) => author).join(',  ')}</p>
 					</div>
 				</div>
 			{/if}
@@ -75,10 +76,8 @@
 
 <style>
 	:root {
-		--patent-dark-gradient: linear-gradient(19deg, #21D4FD 0%, #B721FF 100%);
-		--patent-light-gradient: linear-gradient(180deg, #52ACFF 25%, #FFE32C 100%);
-
-
+		--patent-dark-gradient: linear-gradient(19deg, #21d4fd 0%, #b721ff 100%);
+		--patent-light-gradient: linear-gradient(180deg, #52acff 25%, #ffe32c 100%);
 	}
 
 	.dark {

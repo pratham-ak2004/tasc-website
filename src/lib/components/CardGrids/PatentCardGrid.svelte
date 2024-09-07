@@ -1,13 +1,18 @@
-<script lang='ts'>
-    import { PATENT_DETAILS } from '$lib/data/Achievements';
-    import type { Patent, PatentDetails } from '$lib/components/types/AchievementData';
-    import PatentCard from '$lib/components/Card/PatentCard.svelte';
+<script lang="ts">
+	// import { PATENT_DETAILS } from '$lib/data/Achievements';
+	import type { Patent, PatentDetails } from '$lib/components/types/AchievementData';
+	import PatentCard from '$lib/components/Card/PatentCard.svelte';
+	export let year: string;
 
-    export let year: string;
+    import { main } from '$lib/data/Patents';
 
-    let patents: Patent[] = PATENT_DETAILS.find((patent: PatentDetails) => patent.year === year)?.patents || [];
+    let patents:Patent[] = main(year);
+
+	// let patents: Patent[] = PATENT_DETAILS.find((patent: PatentDetails) => patent.year === year)?.patents || [];
+	// console.log(PATENT_DETAILS);
+    //console.log(patents)
 </script>
 
-<div class="sm:px-4 md:py-5 py-0">
-    <PatentCard patents={patents} />
+<div class="py-0 sm:px-4 md:py-5">
+	<PatentCard {patents} />
 </div>

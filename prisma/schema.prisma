@@ -25,17 +25,17 @@ model User {
   accounts      Account[]
   sessions      Session[]
 
-  displayName  String?
-  bio          String?
-  phone        String?
-  username     String?
-  college      String?  @default("N.M.A.M. Institute of Technology")
-  usn          String?
-  lightTheme   String?
-  darkTheme    String?
-  role         String?  @default("user")
-  links        Links?
-  organizers   Event[]
+  displayName String?
+  bio         String?
+  phone       String?
+  username    String?
+  college     String? @default("N.M.A.M. Institute of Technology")
+  usn         String?
+  lightTheme  String?
+  darkTheme   String?
+  role        String? @default("user")
+  links       Links?
+  organizers  Event[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -75,29 +75,32 @@ model Session {
 }
 
 model Core {
-  id       String  @id @default(cuid())
-  year     String
-  post     String
-  image    String
-  quote    String?
-  User     User    @relation(fields: [userId], references: [id])
+  id    String  @id @default(cuid())
+  year  String
+  post  String
+  image String
+  quote String?
+  User  User    @relation(fields: [userId], references: [id])
 
-  order  Int     
+  order  Int
   userId String
 }
 
 model Faculty {
   id String @id @default(cuid())
 
-  name        String
-  email       String
-  designation String
+  name         String
+  email        String
+  designation  String
   designation2 String?
-  image       String
-  about       String[]
+  image        String
+  about        String[]
+  patents      Patents[]     @relation("FacultyPatents")
+  publications Publication[] @relation("FacultyPublications")
+  order        Int           @unique
+  published    Boolean       @default(false)
 
-  order     Int     @unique
-  published Boolean @default(false)
+  //Patent Patents @relation(fields: [name], references: [id])
 
   @@index([name], name: "name_index")
 }
@@ -154,4 +157,44 @@ model Winners {
 
   event Event @relation(fields: [eventId], references: [id])
   team  Team  @relation(fields: [teamId], references: [id])
+}
+
+model Students {
+  id String @id @default(cuid())
+
+  name    String
+  image   String
+  patents Patents[] @relation("StudentPatents")
+}
+
+model Patents {
+  id String @id @default(cuid())
+
+  patentId         String
+  year             String
+  faculty          Faculty[]  @relation("FacultyPatents")
+  title            String
+  authors          String[]
+  students         Students[] @relation("StudentPatents")
+  inventorsName    String[]
+  inventorsAddress String?
+  certificate      String?
+}
+
+model Publication {
+  id                   String    @id @default(cuid())
+  facultyId            String?
+  authors              String[]
+  title                String
+  publish_date         String
+  publisher            String?
+  journal              String?
+  conference           String?
+  link                 String
+  ranking              String?
+  impact_factor        String?
+  indexed              String
+  publisher_conference String?
+  year                 Int
+  faculty              Faculty[] @relation("FacultyPublications")
 }

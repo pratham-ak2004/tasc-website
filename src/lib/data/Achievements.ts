@@ -756,12 +756,13 @@ export const PATENT_DETAILS = [
             {
                 id: '202441000149 A',
                 faculty: ['Ms. Swathi Pai M'],
-                inventors: [
-                    { address: 'PES University, Bangalore', names: ['Dr. Yashaswini DK', 'Dr. Mohan Kumar AV'] },
-                    { address: 'Presidency University', names: ['Mr. Tanveer Ahmed'] },
-                    { address: 'Don Bosco Institute of Techonology', names: ['Dr. Shankara Gowda SR'] },
-                    { address: 'REVA University', names: ['Dr. Chaithra'] }
-                ],
+                // inventors: [
+                //     { address: 'PES University, Bangalore', names: ['Dr. Yashaswini DK', 'Dr. Mohan Kumar AV'] },
+                //     { address: 'Presidency University', names: ['Mr. Tanveer Ahmed'] },
+                //     { address: 'Don Bosco Institute of Techonology', names: ['Dr. Shankara Gowda SR'] },
+                //     { address: 'REVA University', names: ['Dr. Chaithra'] }
+                // ],
+                authors: ["Dr. Yashaswini DK"],
                 title: 'Real Time Health Care Forecasting System'
             },
             {
