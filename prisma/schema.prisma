@@ -175,9 +175,9 @@ model Patents {
   faculty          Faculty[]  @relation("FacultyPatents")
   title            String
   authors          String[]
-  students         Student[] @relation("StudentPatents")
+  student         Student[] @relation("StudentPatents")
   inventorsName    String[]
-  inventorsAddress String?
+  inventorsAddress String[]
   certificate      String?
 }
 
