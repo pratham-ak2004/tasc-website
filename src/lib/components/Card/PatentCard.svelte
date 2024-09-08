@@ -22,11 +22,11 @@
 	});
 </script>
 
-<div class={`grid h-fit w-full space-y-4 sm:space-y-10 ${theme}`}>
+<div class={`mb-6 grid h-fit w-full scale-90 space-y-4 sm:space-y-10 ${theme}`}>
 	<div class="dark:custom-shadow-black w-[95%] justify-self-center rounded-2xl border-2 border-blue-900 bg-card p-1 shadow-xl sm:w-[80%] sm:p-4">
 		<p class="text-center text-xs font-bold text-black underline underline-offset-2 dark:text-yellow-300 sm:text-lg sm:font-semibold md:text-2xl md:underline-offset-4 lg:text-3xl">{title}</p>
 		{#if certificate}
-			<div class="my-5 grid w-full"><img src={certificate} class="w-[80%] justify-self-center sm:w-[30%]" alt="" /></div>
+			<div class="my-5 grid w-full"><img src={certificate} class="w-[80%] justify-self-center rounded-sm sm:w-[30%]" alt="" /></div>
 		{/if}
 		{#if !certificate}
 			<div class="grid grid-cols-10 py-2 md:p-6">
@@ -71,7 +71,7 @@
 				</div>
 			</div>
 		{/if}
-		{#if authors.length != 0}
+		{#if authors.length != 0 && !certificate}
 			<div class="grid grid-cols-10 py-2 md:p-6">
 				<p class="sm:text-md col-span-3 self-center text-center text-xs text-black dark:text-white sm:col-span-2 md:text-lg lg:text-xl">Collaborated with</p>
 				<p class="sm:text-md col-span-1 self-center text-center text-xs text-black dark:text-white md:text-lg lg:text-xl">:</p>
