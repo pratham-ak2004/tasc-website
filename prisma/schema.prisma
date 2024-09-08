@@ -87,8 +87,7 @@ model Core {
 }
 
 model Faculty {
-  id String @id @default(cuid())
-
+  id           String        @id @default(cuid())
   name         String
   email        String
   designation  String
@@ -99,8 +98,6 @@ model Faculty {
   publications Publication[] @relation("FacultyPublications")
   order        Int           @unique
   published    Boolean       @default(false)
-
-  //Patent Patents @relation(fields: [name], references: [id])
 
   @@index([name], name: "name_index")
 }
@@ -158,7 +155,6 @@ model Winners {
   event Event @relation(fields: [eventId], references: [id])
   team  Team  @relation(fields: [teamId], references: [id])
 }
-
 model Student {
   id String @id @default(cuid())
 
@@ -182,7 +178,7 @@ model Patents {
 }
 
 model Publication {
-  id                   String    @id @default(cuid())
+  id                   String        @id @default(cuid())
   facultyId            String?
   authors              String[]
   title                String
