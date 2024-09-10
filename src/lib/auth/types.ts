@@ -7,7 +7,7 @@ type User = {
 
 	displayName: string | null;
 	bio: string | null;
-	phone: number | null;
+	phone: string | null;
 	username: string | null;
 	college: string | null;
 	usn: string | null;
@@ -28,10 +28,11 @@ type UserData = {
 
 type UserProfileData = {
 	id: string;
-
+	displayName: string | null;
 	photoURL: string|null;
 	bio: string | null;
-	phone: number | null;
+	phone: string | null;
+	email: string | null;
 	usn: string | null;
 	college: string | null;
 	lightTheme: string | null;

@@ -33,14 +33,14 @@ model User {
   usn         String?
   lightTheme  String?
   darkTheme   String?
-  role        String? @default("user")
+  role        Role     @default(USER)
   links       Links?
   organizers  Event[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   Core      Core[]
-  Team      Team[]
+  Team      Team[]   @relation("UserTeam")
 }
 
 model Account {
@@ -112,7 +112,10 @@ model Event {
   time         String?
   reportLink   String?
   venue        String?
-  category     String
+  category     EventCategory
+  minTeamSize  Int     @default(1)
+  maxTeamSize  Int     @default(1)
+  type         EventType
   participants Team[]
   winners      Winners[]
   organizers   User[]
@@ -137,7 +140,8 @@ model Links {
 model Team {
   id String @id @default(cuid())
 
-  user     User[]
+  name     String?
+  user     User[]    @relation("UserTeam")
   event    Event     @relation(fields: [eventId], references: [id])
   winner   Winners[]
   attended Boolean   @default(false)
@@ -179,7 +183,6 @@ model Patents {
 
 model Publication {
   id                   String        @id @default(cuid())
-  facultyId            String?
   authors              String[]
   title                String
   publish_date         String
@@ -193,4 +196,20 @@ model Publication {
   publisher_conference String?
   year                 Int
   faculty              Faculty[] @relation("FacultyPublications")
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum EventType {
+  SOLO
+  TEAM
+}
+
+enum EventCategory {
+  PREVIOUS
+  UPCOMING
+  CURRENT
 }

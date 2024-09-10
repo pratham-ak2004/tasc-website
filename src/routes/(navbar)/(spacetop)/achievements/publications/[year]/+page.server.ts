@@ -24,6 +24,6 @@ export const load = async ({ params }) => {
             }
         }
     });
-    // console.log(faculties[0].publications);
+    
     return { body: { faculties } };
 };

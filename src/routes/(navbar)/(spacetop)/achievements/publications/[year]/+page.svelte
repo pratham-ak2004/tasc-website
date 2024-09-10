@@ -20,6 +20,6 @@
             <button class={`text-md sm:text-xl md:text-2xl ${year === '2024' ? 'underline underline-offset-4' : 'no-underline'}`}> 2024-25 </button>
         </a>
         </div>
-    <PublicationCardGrid year={year} faculties={faculties}/>
+    <PublicationCardGrid faculties={faculties}/>
 
 </div>
