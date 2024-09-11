@@ -9,7 +9,7 @@
 	let includedMonths = [1, 2, 3, 4, 5, 6];
 </script>
 
-<div class="sm:mx-20 my-20 sm:px-10 px-5">
+<div class="sm:mx-20 my-10 sm:px-10 px-5">
 	{#if eventType ==='previous'}
 	<Accordion.Root value={openItem}>
 		<!-- <Accordion.Item value="item-1">
@@ -30,7 +30,7 @@
 				<div class={`grid-container sm:mx-20 mx-5 gap-x-10 sm:gap-y-10`}>
 					{#each events as event}
 						{#if event.date && ((event.date.getFullYear() == 2023 && !includedMonths.includes(event.date.getMonth())) || (event.date.getFullYear() == 2024 && includedMonths.includes(event.date.getMonth())))}
-							<EventCardgridChild {event} />
+							<EventCardgridChild {event} {eventType} />
 						{/if}
 					{/each}
 				</div>
@@ -44,7 +44,7 @@
 				<div class={`grid-container sm:mx-20 mx-5 gap-x-10  sm:gap-y-10`}>
 					{#each events as event}
 						{#if event.date && ((event.date.getFullYear() == 2022 && !includedMonths.includes(event.date.getMonth())) || (event.date.getFullYear() == 2023 && includedMonths.includes(event.date.getMonth())))}
-							<EventCardgridChild {event} />
+							<EventCardgridChild {event} {eventType} />
 						{/if}
 					{/each}
 				</div>
@@ -52,9 +52,9 @@
 		</Accordion.Item>
 	</Accordion.Root>
 	{:else}
-		<div class={`grid-container mx-20 gap-10 py-16 `}>
+		<div class={`gap-10 py-16 `}>
 			{#each events as event}
-				<EventCardgridChild {event} />
+				<EventCardgridChild {event} {eventType} />
 			{/each}
 		</div>
 	{/if}

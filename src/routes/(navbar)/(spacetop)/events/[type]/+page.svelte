@@ -9,7 +9,7 @@
 </script>
 
 {#if eventType !== 'current'}
-	<div class={`${eventType === 'upcoming' ? 'h-screen' : ''}`}>
+	<div>
 		<div class={'flex w-full justify-center space-x-8 pt-16 font-bold md:space-x-16'}>
 			<a href="/events/previous">
 				<button class={`text-xl md:text-2xl ${eventType === 'previous' ? 'underline underline-offset-4' : 'no-underline'}`} on:click={() => (eventType = 'previous')}> Previous Events </button>
@@ -23,6 +23,4 @@
 
 		<EventCardgrid events={data.events} eventType={eventType}/>
 	</div>
-{:else}
-	<Prompting />
 {/if}
