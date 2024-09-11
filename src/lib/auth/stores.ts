@@ -44,6 +44,7 @@ const userProfileData:Readable<UserProfileData | null> = derived(user, ($user, s
 			phone: $user.phone,
 			email: $user.email,
 			usn: $user.usn,
+			username: $user.username,
 			college: $user.college,
 			instagram: links?.instagram,
 			linkedin: links?.linkedin,

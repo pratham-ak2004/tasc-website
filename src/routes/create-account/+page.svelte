@@ -73,7 +73,7 @@
 	}
 
 	async function createAccount() {
-		if ((isValidName && isValidUSN && isValidUsername) || ($userProfileData?.displayName && $userProfileData.usn && isValidUsername)) {
+		if ((isValidName && isValidUSN && isValidUsername && isValidPhone) || ($userProfileData?.displayName && $userProfileData.usn && isValidUsername && $userProfileData.phone)) {
 			console.log('confirming username', username);
 
 			const response = await fetch(`/api/username?id=${$user?.id}`, {

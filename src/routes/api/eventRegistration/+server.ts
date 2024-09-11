@@ -29,7 +29,9 @@ export async function POST({ request }) {
             data: {
                 displayName: data.userName,
                 phone: data.userPhone,
-                usn: data.userUsn
+                usn: data.userUsn,
+                username: data.userUsername,
+                bio: `Hello! I'm ${data.userName}`,
             } 
         })
     }

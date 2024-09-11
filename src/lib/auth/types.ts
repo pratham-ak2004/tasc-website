@@ -34,6 +34,7 @@ type UserProfileData = {
 	phone: string | null;
 	email: string | null;
 	usn: string | null;
+	username: string | null;
 	college: string | null;
 	lightTheme: string | null;
 	darkTheme: string | null;

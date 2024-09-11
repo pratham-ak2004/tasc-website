@@ -8,7 +8,7 @@ import { EventCategory } from '@prisma/client';
 // @ts-ignore
 export const load = (async ({ params }) => {
 	const eventSnapshot = await db.event.groupBy({
-		by: ['id', 'title', 'description', 'date', 'time', 'image', 'reportLink', 'venue', 'category'],
+		by: ['id', 'title', 'description', 'date', 'time', 'image', 'reportLink', 'venue', 'category', 'guests'],
 		orderBy: { date: params.type === 'upcoming' ? 'asc' : 'desc' },
 		where: { published: true, category: params.type?.toUpperCase() as EventCategory }
 	})
