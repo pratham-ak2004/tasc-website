@@ -53,9 +53,11 @@
 	</Accordion.Root>
 	{:else}
 		<div class={`gap-10 py-16 `}>
-			{#each events as event}
-				<EventCardgridChild {event} {eventType} />
-			{/each}
+			<div class={`grid-container sm:mx-20 mx-5 gap-x-10  sm:gap-y-10`}>
+				{#each events as event}
+						<EventCardgridChild {event} {eventType} />
+				{/each}
+			</div>
 		</div>
 	{/if}
 </div>

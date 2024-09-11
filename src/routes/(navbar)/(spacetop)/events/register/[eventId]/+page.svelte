@@ -131,14 +131,14 @@
 </script>
 
 <!-- HTML template -->
-<div>
-    <h1>{data.event.title}</h1>
-    <div class="flex flex-col">
-        <Label for="name">Name</Label>
+<div class="p-10">
+    <h1 class="text-4xl text-center font-bold mb-5">{data.event.title}</h1>
+    <div class="flex max-w-fit flex-col m-auto p-5 bg-[rgb(220,217,217)] dark:bg-transparent backdrop-blur-xl rounded-3xl border min-w-[250px] sm:min-w-[400px] md:min-w-[500px] md:max-w-[600px]">
+        <Label for="name" class="text-xl">Name</Label>
         {#if $userProfileData?.displayName}
             <p class="text-white bg-muted px-3 py-2 text-sm rounded-md">{$userProfileData?.displayName}</p>
         {:else}
-            <Input type="text" name="name" placeholder="Name..." bind:value={userInfo.name} class={!isValidName && isTouchedName ? 'bg-red-200 dark:bg-red-900' : ''} required />
+            <Input type="text" name="name" placeholder="Name..." bind:value={userInfo.name} class={` ${!isValidName && isTouchedName ? 'bg-red-200 dark:bg-red-900' : ''}`} required />
             {#if isTouchedName && !isValidName}
 				<div>
 					<p>The name you have entered is invalid.</p>
@@ -146,8 +146,8 @@
 				</div>
 			{/if}
         {/if}
-        
-        <Label for="phone">Phone number</Label>
+        <br>
+        <Label for="phone" class="text-xl">Phone number</Label>
         {#if $userProfileData?.phone}
             <p class="text-white bg-muted px-3 py-2 text-sm rounded-md">{$userProfileData?.phone}</p>
         {:else}
@@ -158,8 +158,8 @@
 				</div>
 			{/if}
         {/if}
-        
-        <Label for="usn">USN</Label>
+        <br>
+        <Label for="usn" class="text-xl">USN</Label>
         {#if $userProfileData?.usn}
             <p class="text-white bg-muted px-3 py-2 text-sm rounded-md">{$userProfileData.usn}</p>
         {:else}
@@ -173,24 +173,27 @@
         {/if}
 
         {#if data.event.type === 'TEAM'}
-            <label for="team">Create or join a team</label>
-            <select name="team" bind:value={userInfo.team} class="text-black">
-                <option value="" disabled>Choose an option</option>
-                <option value="create">Create Team</option>
-                <option value="join">Join Team</option>
+        <br>
+            <label for="team" class="text-xl">Create or join a team</label>
+            <select name="team" bind:value={userInfo.team} class="dark:text-white w-fit bg-transparent border p-2 rounded-lg">
+                <option value="" disabled class="text-black">Choose an option</option>
+                <option value="create" class="text-black">Create Team</option>
+                <option value="join" class="text-black">Join Team</option>
             </select>
 
             {#if userInfo.team === 'create'}
-                <label for="teamName">Team Name</label>
+            <br>
+                <label for="teamName" class="text-xl">Team Name</label>
                 <Input type="text" name="teamName" placeholder="Team Name..." bind:value={userInfo.teamName}  class={!isValidTeamName && isTouchedTeamName ? 'bg-red-200 dark:bg-red-900' : ''} required />
                 {#if isTouchedTeamName && !isValidTeamName}
                     <div>
                         <p>The team name you have entered is invalid.</p>
-                        <p class="text-sm text-muted-foreground">Your team name must begin with a Capital letter and shouldn't begin or end with a space.</p>
+                        <p class="text-sm text-muted-foreground">Your team name must begin with a Capital letter, must contain atleast 5 characters and shouldn't begin or end with a space.</p>
                     </div>
                 {/if}
             {:else if userInfo.team === 'join'}
-                <label for="teamId">Team ID</label>
+            <br>
+                <label for="teamId" class="text-xl">Team ID</label>
                 <Input type="text" name="teamId" placeholder="Team ID..." bind:value={userInfo.teamId} class="{!isValidTeamId && isTouchedTeamId ? 'bg-red-200 dark:bg-red-900' : ''}" required />
                 {#if isTouchedTeamId && !isValidTeamId}
                     <div class="mb-2">
@@ -201,15 +204,16 @@
             {/if}
 
             {#if teamDetails}
-                <p>Team Name: {teamDetails.name}</p>
+            <br>
+                <p class="text-xl">Team Name: {teamDetails.name}</p>
                 <div class="flex">
-                    <p>Team ID: </p>
-                    <input type="text" value={teamDetails.id} readonly>
-                    <button on:click={copyToClipboard}>Copy</button>
+                    <p class="text-xl">Team ID: {teamDetails.id}</p>
+                    <button on:click={copyToClipboard} class=" bg-[rgb(240,240,240)] rounded-md text-black p-2 ml-2 font-bold">Copy</button>
                 </div>
+                <p>Ask your friends to join your team using this team id</p>
             {/if}
         {/if}
         
-        <button on:click={registerForEvent} disabled={disabled}>Register</button>
+        <button on:click={registerForEvent} disabled={disabled} class=" bg-[rgb(60,179,113)] py-2 max-w-[100px] m-auto mt-5 px-5 rounded-sm">Register</button>
     </div>
 </div>
