@@ -5,7 +5,7 @@
 	import { marked } from 'marked';
 	import { onMount } from 'svelte';
 	import * as Dialog from '$lib/components/ui/dialog-publications';
-	import { exclaim, failure, success } from '$lib/components/Toast/toast';
+	import { exclaim, failure } from '$lib/components/Toast/toast';
 	
 	export let event;
 	export let eventType: string;
@@ -54,7 +54,7 @@
 		<div class="dark:custom-shadow-black bg-muted-light dark:bg-muted-dark m-auto flex-1 rounded-lg px-5 py-6 shadow-xl dark:drop-shadow-md">
 			<div class="flex justify-center">
 				{#if event.image}
-					<img src={event?.image} alt={event.title} class="border-muted-light dark:border-muted-dark m-auto border object-cover" />
+					<img src={event?.image} alt={event.title} class="border-muted-light mb-2 dark:border-muted-dark m-auto border object-cover" />
 				{/if}
 			</div>
 			<div>
@@ -94,8 +94,8 @@
 									<img src={event?.image} alt={event.title} class="border-muted-light dark:border-muted-dark m-auto h-auto w-auto border object-cover md:w-1/2" />
 								{/if}
 								<div class="mx-3 flex flex-col text-nowrap">
-									<h1 class="sm:pb-12 pb-2 text-2xl md:text-3xl font-bold">{event.title}</h1>
-									<div class="grid sm:justify-around h-full">
+									<h1 class="md:pb-12 pb-4 mt-4 text-2xl md:text-3xl font-bold">{event.title}</h1>
+									<div class="flex h-full flex-col content-start">
 										{#if event.date}
 											<h2 class="text-sm sm:text-md md:text-lg lg:text-xl"><span class="font-bold">Date:</span> {event.date.toLocaleDateString(undefined, options)}</h2>
 										{/if}
