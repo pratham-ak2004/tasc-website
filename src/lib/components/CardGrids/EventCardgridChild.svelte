@@ -87,28 +87,32 @@
 						<!-- <h1 class=" md:text-md text-center text-xs font-semibold hover:cursor-pointer hover:underline sm:text-sm lg:text-lg">{paper.title}</h1> -->
 						View Details
 					</Dialog.Trigger>
-					<Dialog.Content class="w-auto overflow-y-scroll">
-						<div class="grid justify-around gap-6">
+					<Dialog.Content class="w-full md:w-2/3 overflow-y-scroll">
+						<div class="grid justify-around">
 							<div class="relative flex flex-col md:flex-row">
 								{#if event.image}
 									<img src={event?.image} alt={event.title} class="border-muted-light dark:border-muted-dark m-auto h-auto w-auto border object-cover md:w-1/2" />
 								{/if}
 								<div class="mx-3 flex flex-col text-nowrap">
-									<h1 class="py-4 text-2xl font-bold">{event.title}</h1>
-									{#if event.date}
-										<h2 class=" text-lg"><span class="font-bold">Date:</span> {event.date.toLocaleDateString(undefined, options)}</h2>
-									{/if}
-									{#if event.time}
-										<h2 class=" text-lg"><span class="font-bold">Time:</span> {event.time}</h2>
-									{/if}
-									{#if event.venue}
-										<h2 class=" text-lg"><span class="font-bold">Venue:</span> {event?.venue}</h2>
-									{/if}
+									<h1 class="sm:pb-12 pb-2 text-2xl md:text-3xl font-bold">{event.title}</h1>
+									<div class="grid sm:justify-around h-full">
+										{#if event.date}
+											<h2 class="text-sm sm:text-md md:text-lg lg:text-xl"><span class="font-bold">Date:</span> {event.date.toLocaleDateString(undefined, options)}</h2>
+										{/if}
+										{#if event.time}
+											<h2 class="text-sm sm:text-md md:text-lg lg:text-xl"><span class="font-bold">Time:</span> {event.time}</h2>
+										{/if}
+										{#if event.venue}
+											<h2 class="text-sm sm:text-md md:text-lg lg:text-xl"><span class="font-bold">Venue:</span> {event?.venue}</h2>
+										{/if}
+									</div>
 								</div>
 							</div>
+							<br>
 							<hr class="w-full border-b border-white" />
+							<br>
 							<div>
-								<h1 class="text-3xl font-bold">Description</h1>
+								<h1 class="sm:text-3xl text-2xl font-bold">Description</h1>
 								<br />
 								<p class="text-md">
 									{@html marked(event.description)}
