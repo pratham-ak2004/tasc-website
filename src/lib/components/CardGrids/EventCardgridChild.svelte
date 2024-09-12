@@ -66,30 +66,36 @@
 							<!-- <h1 class=" md:text-md text-center text-xs font-semibold hover:cursor-pointer hover:underline sm:text-sm lg:text-lg">{paper.title}</h1> -->
 							View Details
 						</Dialog.Trigger>
-						<Dialog.Content>
+						<Dialog.Content class='w-auto'>
 							<div class="grid justify-around gap-6">
-								{#if event.image}
-									<img src={event?.image} alt={event.title} class="border-muted-light dark:border-muted-dark m-auto border object-cover" />
-								{/if}
-								<h1 class="py-4 text-center text-2xl font-bold">{event.title}</h1>
+								<div class="flex">
+									{#if event.image}
+										<img src={event?.image} alt={event.title} class="border-muted-light dark:border-muted-dark m-auto border object-cover" />
+									{/if}
+									<div class="flex flex-col mx-3">
+										<h1 class="py-4 text-2xl font-bold">{event.title}</h1>
+										{#if event.date}
+											<h2 class=" text-lg">Date: {event.date.toLocaleDateString(undefined, options)}</h2>
+										{/if}
+										{#if event.time}
+											<h2 class=" text-lg">Time: {event.time}</h2>
+										{/if}
+										{#if event.venue}
+											<h2 class=" text-lg">Venue: {event?.venue}</h2>
+										{/if}
+									</div>
+								</div>
 								<hr class="w-full border-b border-white" />
 								<div>
 									<h1 class="text-xl font-bold">Description</h1>
 									<p class="text-md">{event.description}</p>
+									<br>
 									{#if teamName}
 										<p class="text-md">Team Name : {teamName}</p>
 										<p class="text-md">Team Id : {teamId}</p>
 									{/if}
 									<br />
-									{#if event.date}
-										<h2 class=" text-lg">Date: {event.date.toLocaleDateString(undefined, options)}</h2>
-									{/if}
-									{#if event.time}
-										<h2 class=" text-lg">Time: {event.time}</h2>
-									{/if}
-									{#if event.venue}
-										<h2 class=" text-lg">Venue: {event?.venue}</h2>
-									{/if}
+									
 								</div>
 							</div>
 						</Dialog.Content>
@@ -103,26 +109,36 @@
 							<!-- <h1 class=" md:text-md text-center text-xs font-semibold hover:cursor-pointer hover:underline sm:text-sm lg:text-lg">{paper.title}</h1> -->
 							View Details
 						</Dialog.Trigger>
-						<Dialog.Content>
+						<Dialog.Content class='w-auto'>
 							<div class="grid justify-around gap-6">
-								{#if event.image}
-									<img src={event?.image} alt={event.title} class="border-muted-light dark:border-muted-dark m-auto border object-cover" />
-								{/if}
-								<h1 class="py-4 text-center text-2xl font-bold">{event.title}</h1>
+								<div class="flex">
+									{#if event.image}
+										<img src={event?.image} alt={event.title} class="border-muted-light dark:border-muted-dark m-auto border object-cover" />
+									{/if}
+									<div class="flex flex-col mx-3">
+										<h1 class="py-4 text-2xl font-bold">{event.title}</h1>
+										{#if event.date}
+											<h2 class=" text-lg">Date: {event.date.toLocaleDateString(undefined, options)}</h2>
+										{/if}
+										{#if event.time}
+											<h2 class=" text-lg">Time: {event.time}</h2>
+										{/if}
+										{#if event.venue}
+											<h2 class=" text-lg">Venue: {event?.venue}</h2>
+										{/if}
+									</div>
+								</div>
 								<hr class="w-full border-b border-white" />
 								<div>
-									<h1 class=" text-xl font-bold">Description</h1>
+									<h1 class="text-xl font-bold">Description</h1>
 									<p class="text-md">{event.description}</p>
+									<br>
+									{#if teamName}
+										<p class="text-md">Team Name : {teamName}</p>
+										<p class="text-md">Team Id : {teamId}</p>
+									{/if}
 									<br />
-									{#if event.date}
-										<h2 class=" text-lg">Date: {event.date.toLocaleDateString(undefined, options)}</h2>
-									{/if}
-									{#if event.time}
-										<h2 class=" text-lg">Time: {event.time}</h2>
-									{/if}
-									{#if event.venue}
-										<h2 class=" text-lg">Venue: {event?.venue}</h2>
-									{/if}
+									
 								</div>
 							</div>
 						</Dialog.Content>
