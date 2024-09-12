@@ -68,14 +68,27 @@
 						</Dialog.Trigger>
 						<Dialog.Content>
 							<div class="grid justify-around gap-6">
+								{#if event.image}
+									<img src={event?.image} alt={event.title} class="border-muted-light dark:border-muted-dark m-auto border object-cover" />
+								{/if}
 								<h1 class="py-4 text-center text-2xl font-bold">{event.title}</h1>
 								<hr class="w-full border-b border-white" />
 								<div>
 									<h1 class="text-xl font-bold">Description</h1>
 									<p class="text-md">{event.description}</p>
 									{#if teamName}
-										<p class="text-md ">Team Name : {teamName}</p>
-										<p class="text-md ">Team Id : {teamId}</p>
+										<p class="text-md">Team Name : {teamName}</p>
+										<p class="text-md">Team Id : {teamId}</p>
+									{/if}
+									<br />
+									{#if event.date}
+										<h2 class=" text-lg">Date: {event.date.toLocaleDateString(undefined, options)}</h2>
+									{/if}
+									{#if event.time}
+										<h2 class=" text-lg">Time: {event.time}</h2>
+									{/if}
+									{#if event.venue}
+										<h2 class=" text-lg">Venue: {event?.venue}</h2>
 									{/if}
 								</div>
 							</div>
@@ -92,11 +105,24 @@
 						</Dialog.Trigger>
 						<Dialog.Content>
 							<div class="grid justify-around gap-6">
+								{#if event.image}
+									<img src={event?.image} alt={event.title} class="border-muted-light dark:border-muted-dark m-auto border object-cover" />
+								{/if}
 								<h1 class="py-4 text-center text-2xl font-bold">{event.title}</h1>
 								<hr class="w-full border-b border-white" />
 								<div>
-									<h1 class="text-center text-xl font-bold">Description</h1>
-									<p class="text-md text-center">{event.description}</p>
+									<h1 class=" text-xl font-bold">Description</h1>
+									<p class="text-md">{event.description}</p>
+									<br />
+									{#if event.date}
+										<h2 class=" text-lg">Date: {event.date.toLocaleDateString(undefined, options)}</h2>
+									{/if}
+									{#if event.time}
+										<h2 class=" text-lg">Time: {event.time}</h2>
+									{/if}
+									{#if event.venue}
+										<h2 class=" text-lg">Venue: {event?.venue}</h2>
+									{/if}
 								</div>
 							</div>
 						</Dialog.Content>

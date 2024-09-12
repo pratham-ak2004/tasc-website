@@ -133,7 +133,7 @@
 <!-- HTML template -->
 <div class="p-10">
     <h1 class="text-4xl text-center font-bold mb-5">{data.event.title}</h1>
-    <div class="flex max-w-fit flex-col m-auto p-5 bg-[rgb(220,217,217)] dark:bg-transparent backdrop-blur-xl rounded-3xl border min-w-[250px] sm:min-w-[400px] md:min-w-[500px] md:max-w-[600px]">
+    <div class="flex max-w-fit flex-col m-auto p-5 bg-[rgb(220,217,217)] dark:bg-transparent backdrop-blur-md rounded-3xl border min-w-[250px] sm:min-w-[400px] md:min-w-[500px] md:max-w-[600px]">
         <Label for="name" class="text-xl">Name</Label>
         {#if $userProfileData?.displayName}
             <p class="text-white bg-muted px-3 py-2 text-sm rounded-md">{$userProfileData?.displayName}</p>
@@ -175,7 +175,7 @@
         {#if data.event.type === 'TEAM'}
         <br>
             <label for="team" class="text-xl">Create or join a team</label>
-            <select name="team" bind:value={userInfo.team} class="dark:text-white w-fit bg-transparent border p-2 rounded-lg">
+            <select name="team" bind:value={userInfo.team} class="dark:text-white w-fit dark:bg-transparent border p-2 rounded-lg">
                 <option value="" disabled class="text-black">Choose an option</option>
                 <option value="create" class="text-black">Create Team</option>
                 <option value="join" class="text-black">Join Team</option>
@@ -184,7 +184,7 @@
             {#if userInfo.team === 'create'}
             <br>
                 <label for="teamName" class="text-xl">Team Name</label>
-                <Input type="text" name="teamName" placeholder="Team Name..." bind:value={userInfo.teamName}  class={!isValidTeamName && isTouchedTeamName ? 'bg-red-200 dark:bg-red-900' : ''} required />
+                <Input type="text" name="teamName" placeholder="Team Name..." bind:value={userInfo.teamName}  class={`bg-white dark:text-white dark:bg-opacity-0 text-black dark:bg-tranparent ${!isValidTeamName && isTouchedTeamName ? 'bg-red-200 dark:bg-red-900' : ''}`} required />
                 {#if isTouchedTeamName && !isValidTeamName}
                     <div>
                         <p>The team name you have entered is invalid.</p>
