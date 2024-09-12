@@ -34,11 +34,11 @@
 		const data = await response.json();
 
 		if (data.data) {
-			success('Updated Phone successfully');
+			success('Updated Username successfully');
 			username = '';
 			setTimeout(() => { setUser(data.data) }, 3000)
 		} else {
-			failure('Failed to update Phone');
+			failure('Failed to update Username');
 		}
 	}
 
