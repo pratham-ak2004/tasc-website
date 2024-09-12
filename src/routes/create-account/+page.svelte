@@ -11,7 +11,9 @@
 	import { user, userData, userProfileData } from '$lib/auth/stores';
 
 	import { page } from '$app/stores';
-	let redirect = $page.url.searchParams.get('redirect') ?? '';
+	import { redirectTo } from '$lib/stores/redirect';
+	// let redirect = $page.url.searchParams.get('redirect') ?? '';
+	let redirect = $redirectTo ?? ""
 
 	let name = '';
 	let usn = '';
