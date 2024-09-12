@@ -55,7 +55,7 @@
 		display: grid;
 		grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
 		justify-items: center;
-		justify-content: end;
+		justify-content: center;
 		align-content: end;
 		/* row-gap: 4rem; */
 	}
