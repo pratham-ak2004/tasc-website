@@ -136,7 +136,7 @@
 <!-- HTML template -->
 <div class="p-10">
 	<h1 class="mb-5 text-center text-4xl font-bold">{data.event.title}</h1>
-	<div class="m-auto flex min-w-[250px] max-w-fit flex-col rounded-3xl border p-5 backdrop-blur-md dark:bg-transparent sm:min-w-[400px] md:min-w-[500px] md:max-w-[600px]">
+	<div class="m-auto flex min-w-[250px] w-auto flex-col rounded-3xl border p-5 backdrop-blur-md dark:bg-transparent sm:min-w-[400px] md:min-w-[500px] md:max-w-[600px]">
 		<Label for="name" class="text-xl">Name</Label>
 		{#if $userProfileData?.displayName}
 			<p class="rounded-md bg-muted px-3 py-2 text-sm text-white">{$userProfileData?.displayName}</p>
