@@ -12,18 +12,6 @@
 <div class="sm:mx-20 my-10 sm:px-10 px-5">
 	{#if eventType ==='previous'}
 	<Accordion.Root value={openItem}>
-		<!-- <Accordion.Item value="item-1">
-			<Accordion.Trigger class="text-2xl"">2024-25</Accordion.Trigger>
-			<Accordion.Content >
-				<div class={`grid-container sm:mx-20 mx-5 gap-x-10  sm:gap-y-10`}>
-					{#each events as event}
-						{#if event.date && ((event.date.getFullYear() == 2024 && !includedMonths.includes(event.date.getMonth())) || (event.date.getFullYear() == 2025 && includedMonths.includes(event.date.getMonth())))}
-							<EventCardgridChild {event} />
-						{/if}
-					{/each}
-				</div>
-			</Accordion.Content>
-		</Accordion.Item> -->
 		<Accordion.Item value="item-2" class="border-b-2">
 			<Accordion.Trigger class="text-2xl sm:ml-10">2023-24</Accordion.Trigger>
 			<Accordion.Content>
@@ -53,9 +41,11 @@
 	</Accordion.Root>
 	{:else}
 		<div class={`gap-10 py-16 `}>
-			{#each events as event}
-				<EventCardgridChild {event} {eventType} />
-			{/each}
+			<div class={`grid-container sm:mx-20 mx-5 gap-x-10  sm:gap-y-10`}>
+				{#each events as event}
+						<EventCardgridChild {event} {eventType} />
+				{/each}
+			</div>
 		</div>
 	{/if}
 </div>
