@@ -12,7 +12,8 @@
     "format": "prettier --plugin-search-dir . --write .",
     "db:studio": "prisma studio",
     "db:push": "prisma db push",
-    "db:generate": "prisma generate"
+    "db:generate": "prisma generate",
+    "postinstall": "prisma generate"
   },
   "devDependencies": {
     "@sveltejs/adapter-auto": "^2.1.0",
