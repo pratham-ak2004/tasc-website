@@ -2,8 +2,8 @@ import { db } from '$lib/db/db.js';
 
 export async function load({ url}) {
     const eventId = url.pathname.split('/').filter(Boolean)[2];
-
-    const participants = await db.event.findFirst({
+    
+    const eventData = await db.event.findFirst({
         where:{
             id: eventId
         },
@@ -24,22 +24,19 @@ export async function load({ url}) {
                     attended: true
                 }
             },
-            winners: {
-                select: {
-                    id: true,
-                    position: true,
-                    teamId: true,
-                },
-                orderBy: {
-                    position: 'asc'
-                }
-            }
+        }
+    })    
+
+    const winnersData = await db.winners.findMany({
+        where: {
+            eventId: eventId
         }
     })
 
     return {
         adminData: {
-            participants: participants,
+            participants: eventData?.participants ?? [],
+            winnersData: winnersData
         }
     }
 }   

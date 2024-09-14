@@ -1,24 +1,64 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import * as Table from '$lib/components/ui/table';
 	import { downloadData } from '../../utils.js';
 	import { Download } from 'lucide-svelte';
-	import { page } from '$app/stores';
 	import * as Dialog from '$lib/components/ui/dialog';
-	import { user } from '$lib/auth/stores.js';
+	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
+	import { page } from '$app/stores';
+	import axios from 'axios';
+	import { success, failure, exclaim, information } from '$lib/components/Toast/toast.js';
 
 	export let data;
 
 	let show = 'participants';
 
-	const participants = data.adminData.participants?.participants ?? [];
-	const winners = data.adminData.participants?.winners ?? [];
+	let participants: any[] = [];
+	let winners: any[] = [];
+	let participantsColumns: string[] = [];
+	let winnersColumns: string[] = [];
 
-	const participantsColumns = Object.keys(participants[0]);
-	const winnersColumns = Object.keys(winners?.length > 0 ? winners[0] : []);
+	$: {
+		if (data.adminData) {
+			participants = data.adminData.participants ?? [];
+			winners = data.adminData.winnersData ?? [];
+			if (participants.length > 0) {
+				participantsColumns = Object.keys(participants[0]);
+			} else {
+				participantsColumns = [];
+			}
+			if (winners.length > 0) {
+				winnersColumns = Object.keys(winners[0]);
+			} else {
+				winnersColumns = [];
+			}
+		}
+	}
 
-	console.log(participants);
+	function addWinners(teamId: string) {
+		const eventId = $page.url.pathname.split('/').filter(Boolean).pop();
+	}
+
+	function setAttendedState(state: boolean, participantId: string) {
+		axios.post('/api/admin/events/attendence', {
+			state: state,
+			teamId: participantId
+		}).then((res) => {
+			if(res.status === 200){
+				success('Attendence state updated');
+				participants = participants.map((participant) => {
+					if(participant.id === participantId){
+						participant.attended = state;
+					}
+					return participant;
+				});
+			}else{
+				exclaim("Couldn't update attendence state");
+			}
+		}).catch((err) => {
+			failure('Failed to update attendence state');
+		});
+	}
 </script>
 
 <div class="flex flex-row justify-between gap-4">
@@ -77,9 +117,15 @@
 		>
 		<Table.Header>
 			<Table.Row>
-				{#each participantsColumns as column}
-					<Table.Head>{column}</Table.Head>
-				{/each}
+				{#if show === 'participants'}
+					{#each participantsColumns as column}
+						<Table.Head>{column}</Table.Head>
+					{/each}
+				{:else}
+					{#each winnersColumns as column}
+						<Table.Head>{column}</Table.Head>
+					{/each}
+				{/if}
 			</Table.Row>
 		</Table.Header>
 		<Table.Body class="h-1/2 overflow-auto">
@@ -118,6 +164,20 @@
 										</Dialog.Content>
 									</Dialog.Root>
 								</Table.Cell>
+							{:else if column === 'attended'}
+								<DropdownMenu.Root>
+									<DropdownMenu.Trigger>
+										<Table.Cell><Button>{item[column]}</Button></Table.Cell>
+									</DropdownMenu.Trigger>
+									<DropdownMenu.Content>
+										<DropdownMenu.Group>
+											<DropdownMenu.Label>Select State</DropdownMenu.Label>
+											<DropdownMenu.Separator />
+											<DropdownMenu.Item on:click={() => setAttendedState(true, item['id'])}>True</DropdownMenu.Item>
+											<DropdownMenu.Item on:click={() => setAttendedState(false, item['id'])}>False</DropdownMenu.Item>
+										</DropdownMenu.Group>
+									</DropdownMenu.Content>
+								</DropdownMenu.Root>
 							{:else}
 								<Table.Cell>{item[column]}</Table.Cell>
 							{/if}
@@ -145,14 +205,6 @@
 													<Table.Head>UserName</Table.Head>
 													<Table.Head>Phone</Table.Head>
 												</Table.Header>
-												<!-- <Table.Body>
-													{#each item as userItem}
-														<Table.Cell>{userItem.displayName}</Table.Cell>
-														<Table.Cell>{userItem.email}</Table.Cell>
-														<Table.Cell>{userItem.username}</Table.Cell>
-														<Table.Cell>{userItem.phone}</Table.Cell>
-													{/each}
-												</Table.Body> -->
 											</Table.Root>
 										</Dialog.Content>
 									</Dialog.Root>

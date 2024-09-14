@@ -19,8 +19,8 @@
 			link: '/events'
 		},
 		{
-			name: 'others',
-			link: '/others'
+			name: 'Users',
+			link: '/users'
 		}
 	];
 </script>
@@ -40,7 +40,7 @@
 		</div>
 		<Separator />
 	</div>
-	<div class="w-full overflow-auto p-4">
+	<div class="w-full p-4">
 		{#if !$page.url.pathname.endsWith('admin')}
 			<div class="flex flex-row border-b-2 pb-4">
 				<button
@@ -58,6 +58,8 @@
 				</div>
 			</div>
 		{/if}
-		<slot />
+		<div class="w-full h-[88vh]">
+			<slot />
+		</div>
 	</div>
 </section>
