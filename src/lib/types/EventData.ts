@@ -6,6 +6,7 @@ export default interface EventData {
 	time: string | null;
 	venue: string | null;
 	description: string | null;
+	brief:string|null;
 	guests: string[];
 	reportLink: string | null;
 }

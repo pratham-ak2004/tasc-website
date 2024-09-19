@@ -6,9 +6,11 @@
 	import Input from '$lib/components/ui/input/input.svelte';
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
+	import { QRCodeImage } from 'svelte-qrcode-image';
 	export let data: any;
+	import { page } from '$app/stores';
 
-	let userInfo: { name: string | null; phone: string | null; usn: string | null; team: string | null; teamName: string | null; teamId: string | null } = { name: null, phone: null, usn: null, team: null, teamName: null, teamId: null };
+	let userInfo: { name: string | null; phone: string | null; usn: string | null; team: string | null; teamName: string | null; teamId: string | null; transactionId:string | null } = { name: null, phone: null, usn: null, team: null, teamName: null, teamId: null, transactionId: null };
 	let teamDetails: { name: string; id: string } | null = null;
 	let disabled: boolean = true;
 
@@ -16,6 +18,7 @@
 	const reUSN = /^[A-Z0-9]*$/;
 	const rePhone = /^[0-9]{10}$/;
 	const reCUID = /^c[a-z0-9]{24}$/;
+	const reId = /^[a-zA-Z0-9]+$/;
 
 	$: isValidPhone = userInfo.phone && userInfo.phone?.length === 10 && rePhone.test(userInfo.phone);
 	$: isTouchedPhone = userInfo.phone && userInfo.phone.length >= 1;
@@ -32,12 +35,16 @@
 	$: isValidTeamId = userInfo.teamId && reCUID.test(userInfo.teamId);
 	$: isTouchedTeamId = userInfo.teamId && userInfo.teamId.length >= 1;
 
+
+	$: isValidTransactionId = userInfo.transactionId && userInfo.transactionId.length >= 1 && reId.test(userInfo.transactionId);
+	$: isTouchedTransactionId = userInfo.transactionId && userInfo.transactionId.length >=1
+
 	onMount(async () => {
 		if (!$user) {
 			await signIn('google');
 			setUser({ session: data.session, links: data.links });
 		} else {
-			userInfo = { name: $user.displayName, phone: $user.phone, usn: $user.usn, team: '', teamName: '', teamId: '' };
+			userInfo = { name: $user.displayName, phone: $user.phone, usn: $user.usn, team: '', teamName: '', teamId: '' ,transactionId:''};
 		}
 		checkRegistration();
 	});
@@ -78,7 +85,8 @@
 					team: userInfo.team,
 					teamName: userInfo.teamName,
 					teamId: userInfo.teamId,
-					maxTeamSize: data.event.maxTeamSize
+					maxTeamSize: data.event.maxTeamSize,
+					transactionId:userInfo.transactionId
 				})
 			});
 
@@ -130,13 +138,13 @@
 	};
 
 	// Reactive block to handle disabling button logic
-	$: disabled = !(userInfo.name && userInfo.phone && userInfo.usn) || (data.event.type === 'TEAM' && ((userInfo.team === 'create' && !userInfo.teamName) || (userInfo.team === 'join' && !userInfo.teamId) || !userInfo.team));
+	$: disabled = !(userInfo.name && userInfo.phone && userInfo.usn) || (data.event.type === 'TEAM' && ((userInfo.team === 'create' && !userInfo.teamName && !userInfo.transactionId) || (userInfo.team === 'join' && !userInfo.teamId) || !userInfo.team));//dissabled not working for transactionId
 </script>
 
 <!-- HTML template -->
 <div class="p-10">
 	<h1 class="mb-5 text-center text-4xl font-bold">{data.event.title}</h1>
-	<div class="m-auto flex min-w-[250px] w-auto flex-col rounded-3xl border p-5 backdrop-blur-md dark:bg-transparent sm:min-w-[400px] md:min-w-[500px] md:max-w-[600px]">
+	<div class="m-auto flex w-auto min-w-[250px] flex-col rounded-3xl border p-5 backdrop-blur-md dark:bg-transparent sm:min-w-[400px] md:min-w-[500px] md:max-w-[600px]">
 		<Label for="name" class="text-xl">Name</Label>
 		{#if $userProfileData?.displayName}
 			<p class="rounded-md bg-muted px-3 py-2 text-sm text-white">{$userProfileData?.displayName}</p>
@@ -194,6 +202,18 @@
 						<p class="text-sm text-muted-foreground">Your team name must begin with a Capital letter, must contain atleast 5 characters and shouldn't begin or end with a space.</p>
 					</div>
 				{/if}
+				{#if $page.data.event.entryFee}
+					<div class="h-50 w-50 mx-auto my-5">
+						<p class="text-center text-xl">Scan and pay the entry fee</p>
+						<br />
+						<div class="m-auto w-fit">
+							<QRCodeImage text={$page.data.event.qr} />
+						</div>
+						<br />
+						<label for="transactionId">Transaction ID</label>
+						<Input type="text" name="transactionId" placeholder="transaction Id" bind:value={userInfo.transactionId} class={!isValidTransactionId && isTouchedTransactionId ? 'bg-red-200 dark:bg-red-900' : ''} required />
+					</div>
+				{/if}
 			{:else if userInfo.team === 'join'}
 				<br />
 				<label for="teamId" class="text-xl">Team ID</label>
@@ -212,7 +232,9 @@
 				<div class="flex flex-row flex-nowrap">
 					<p class="text-nowrap text-xl">Team ID:</p>
 					<Input type="text" readonly value={teamDetails.id} />
-					<button on:click={copyToClipboard} class="ml-2"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="white" d="M15.24 2h-3.894c-1.764 0-3.162 0-4.255.148c-1.126.152-2.037.472-2.755 1.193c-.719.721-1.038 1.636-1.189 2.766C3 7.205 3 8.608 3 10.379v5.838c0 1.508.92 2.8 2.227 3.342c-.067-.91-.067-2.185-.067-3.247v-5.01c0-1.281 0-2.386.118-3.27c.127-.948.413-1.856 1.147-2.593s1.639-1.024 2.583-1.152c.88-.118 1.98-.118 3.257-.118h3.07c1.276 0 2.374 0 3.255.118A3.6 3.6 0 0 0 15.24 2" /><path fill="white" d="M6.6 11.397c0-2.726 0-4.089.844-4.936c.843-.847 2.2-.847 4.916-.847h2.88c2.715 0 4.073 0 4.917.847S21 8.671 21 11.397v4.82c0 2.726 0 4.089-.843 4.936c-.844.847-2.202.847-4.917.847h-2.88c-2.715 0-4.073 0-4.916-.847c-.844-.847-.844-2.21-.844-4.936z" /></svg></button>
+					<button on:click={copyToClipboard} class="ml-2"
+						><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="white" d="M15.24 2h-3.894c-1.764 0-3.162 0-4.255.148c-1.126.152-2.037.472-2.755 1.193c-.719.721-1.038 1.636-1.189 2.766C3 7.205 3 8.608 3 10.379v5.838c0 1.508.92 2.8 2.227 3.342c-.067-.91-.067-2.185-.067-3.247v-5.01c0-1.281 0-2.386.118-3.27c.127-.948.413-1.856 1.147-2.593s1.639-1.024 2.583-1.152c.88-.118 1.98-.118 3.257-.118h3.07c1.276 0 2.374 0 3.255.118A3.6 3.6 0 0 0 15.24 2" /><path fill="white" d="M6.6 11.397c0-2.726 0-4.089.844-4.936c.843-.847 2.2-.847 4.916-.847h2.88c2.715 0 4.073 0 4.917.847S21 8.671 21 11.397v4.82c0 2.726 0 4.089-.843 4.936c-.844.847-2.202.847-4.917.847h-2.88c-2.715 0-4.073 0-4.916-.847c-.844-.847-.844-2.21-.844-4.936z" /></svg></button
+					>
 					<!-- <button on:click={copyToClipboard} class=" ml-2 rounded-md bg-[rgb(240,240,240)] p-2 font-bold text-black">Copy</button> -->
 				</div>
 				<p>Ask your friends to join your team using this team id</p>
