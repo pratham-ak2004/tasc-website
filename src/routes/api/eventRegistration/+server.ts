@@ -1,3 +1,4 @@
+import { success } from '$lib/components/Toast/toast.js';
 import { db } from '$lib/db/db';
 
 export async function GET({ url }) {
@@ -41,6 +42,8 @@ export async function POST({ request }) {
             data: {
                 eventId: data.eventId,
                 name: data.teamName,
+                leaderId:data.userId,
+                transactionId:data.transactionId,
                 user: {
                     connect: { id: data.userId }
                 }
@@ -74,4 +77,19 @@ export async function POST({ request }) {
         })
         return new Response(JSON.stringify({ success: true, team, userCreate: data.userCreate }), { status: 201 });
     }
+}
+
+export async function DELETE({request}){
+    const data=await request.json()
+    const deleteMember = await db.team.update({
+        where: {
+            id: data.teamId
+        },
+        data: {
+            user: {
+                disconnect: { id: data.userId }
+            }
+        }
+    })
+    return new Response(JSON.stringify({success:true,deleteMember}),{status:201})
 }

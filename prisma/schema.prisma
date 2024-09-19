@@ -33,7 +33,7 @@ model User {
   usn         String?
   lightTheme  String?
   darkTheme   String?
-  role        Role     @default(USER)
+  role        Role    @default(USER)
   links       Links?
   organizers  Event[]
 
@@ -107,20 +107,23 @@ model Event {
 
   title        String
   description  String?
+  brief        String?
   image        String
   date         DateTime
   time         String?
   reportLink   String?
   venue        String?
+  qr           String?
+  entryFee     Int?
   category     EventCategory
-  minTeamSize  Int     @default(1)
-  maxTeamSize  Int     @default(1)
+  minTeamSize  Int           @default(1)
+  maxTeamSize  Int           @default(1)
   type         EventType
   participants Team[]
   winners      Winners[]
   organizers   User[]
   guests       String[]
-  published    Boolean   @default(false)
+  published    Boolean       @default(false)
 }
 
 model Links {
@@ -140,11 +143,13 @@ model Links {
 model Team {
   id String @id @default(cuid())
 
-  name     String?
-  user     User[]    @relation("UserTeam")
-  event    Event     @relation(fields: [eventId], references: [id])
-  winner   Winners?
-  attended Boolean   @default(false)
+  name          String?
+  leaderId      String?
+  transactionId String?
+  user          User[]   @relation("UserTeam")
+  event         Event    @relation(fields: [eventId], references: [id])
+  winner        Winners?
+  attended      Boolean  @default(false)
 
   eventId String
 }
@@ -153,12 +158,13 @@ model Winners {
   id String @id @default(cuid())
 
   position Int
-  teamId   String   @unique
+  teamId   String @unique
   eventId  String
 
   event Event @relation(fields: [eventId], references: [id])
   team  Team  @relation(fields: [teamId], references: [id])
 }
+
 model Student {
   id String @id @default(cuid())
 
@@ -172,17 +178,17 @@ model Patents {
 
   patentId         String
   year             String
-  faculty          Faculty[]  @relation("FacultyPatents")
+  faculty          Faculty[] @relation("FacultyPatents")
   title            String
   authors          String[]
-  student         Student[] @relation("StudentPatents")
+  student          Student[] @relation("StudentPatents")
   inventorsName    String[]
   inventorsAddress String[]
   certificate      String?
 }
 
 model Publication {
-  id                   String        @id @default(cuid())
+  id                   String    @id @default(cuid())
   authors              String[]
   title                String
   publish_date         String
