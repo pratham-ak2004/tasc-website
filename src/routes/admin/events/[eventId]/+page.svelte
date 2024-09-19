@@ -7,16 +7,25 @@
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
 	import { page } from '$app/stores';
 	import axios from 'axios';
-	import { success, failure, exclaim, information } from '$lib/components/Toast/toast.js';
+	import { success, failure, exclaim } from '$lib/components/Toast/toast.js';
+	import { Plus } from 'lucide-svelte';
+	import Label from '$lib/components/ui/label/label.svelte';
+	import * as RadioGroup from '$lib/components/ui/radio-group';
+	import * as Popover from '$lib/components/ui/popover';
+	import * as Command from '$lib/components/ui/command';
 
 	export let data;
 
 	let show = 'participants';
+	let selectedPosition = 'Select Postion';
+	let selectedTeamId = '';
 
 	let participants: any[] = [];
 	let winners: any[] = [];
 	let participantsColumns: string[] = [];
 	let winnersColumns: string[] = [];
+
+	let open = false;	
 
 	$: {
 		if (data.adminData) {
@@ -33,31 +42,38 @@
 				winnersColumns = [];
 			}
 		}
+		console.log(participants.length);
 	}
 
-	function addWinners(teamId: string) {
+	function addWinners(teamId: string = selectedTeamId, position: string = selectedPosition) {
 		const eventId = $page.url.pathname.split('/').filter(Boolean).pop();
+		console.log('teamId : ', teamId);
+		console.log('position : ', position);
+		console.log('eventId : ', eventId);
 	}
 
 	function setAttendedState(state: boolean, participantId: string) {
-		axios.post('/api/admin/events/attendence', {
-			state: state,
-			teamId: participantId
-		}).then((res) => {
-			if(res.status === 200){
-				success('Attendence state updated');
-				participants = participants.map((participant) => {
-					if(participant.id === participantId){
-						participant.attended = state;
-					}
-					return participant;
-				});
-			}else{
-				exclaim("Couldn't update attendence state");
-			}
-		}).catch((err) => {
-			failure('Failed to update attendence state');
-		});
+		axios
+			.post('/api/admin/events/attendence', {
+				state: state,
+				teamId: participantId
+			})
+			.then((res) => {
+				if (res.status === 200) {
+					success('Attendence state updated');
+					participants = participants.map((participant) => {
+						if (participant.id === participantId) {
+							participant.attended = state;
+						}
+						return participant;
+					});
+				} else {
+					exclaim("Couldn't update attendence state");
+				}
+			})
+			.catch(() => {
+				failure('Failed to update attendence state');
+			});
 	}
 </script>
 
@@ -83,6 +99,74 @@
 		>
 	</div>
 	<div class="flex flex-row gap-2">
+		<Dialog.Root>
+			<Dialog.Trigger class="mt-4 flex flex-row flex-nowrap items-center gap-2 rounded-md border-2 bg-slate-300 p-2 dark:bg-slate-800">
+				<Plus /> winners
+			</Dialog.Trigger>
+			<Dialog.Content>
+				<Dialog.Header>
+					<Dialog.Title>Add Winners</Dialog.Title>
+				</Dialog.Header>
+				<Dialog.Description>
+					<RadioGroup.Root class="mt-2 max-h-60 overflow-y-auto" bind:value={selectedTeamId}>
+						{#each participants as item , idx}
+							<div class="flex items-center space-x-2">
+								<RadioGroup.Item
+									value={item.id}
+									id={idx.toString()}
+								/>
+								<Label for={idx.toString()}>{item.name}</Label>
+							</div>
+						{/each}
+					</RadioGroup.Root>
+					<div class="mt-4 flex flex-row flex-nowrap items-center space-x-2">
+						<Label>Position</Label>
+						<Popover.Root bind:open>
+							<Popover.Trigger asChild let:builder>
+								<Button builders={[builder]} variant="outline" role="combobox" class="w-full justify-between">
+									{selectedPosition}
+								</Button></Popover.Trigger
+							>
+							<Popover.Content
+								><Command.Root>
+									<Command.List>
+										<Command.Item
+											value="WINNERS"
+											onSelect={() => {
+												selectedPosition = 'WINNERS';
+												open = false;
+											}}>WINNERS</Command.Item
+										>
+										<Command.Item
+											value="FIRST_RUNNER_UP"
+											onSelect={() => {
+												selectedPosition = 'FIRST_RUNNER_UP';
+												open = false;
+											}}>FIRST_RUNNER_UP</Command.Item
+										>
+										<Command.Item
+											value="SECOND_RUNNER_UP"
+											onSelect={() => {
+												selectedPosition = 'SECOND_RUNNER_UP';
+												open = false;
+											}}>SECOND_RUNNER_UP</Command.Item
+										>
+									</Command.List>
+								</Command.Root></Popover.Content
+							>
+						</Popover.Root>
+					</div>
+				</Dialog.Description>
+				<Dialog.Footer>
+					<Dialog.Close
+						class="rounded-md bg-foreground p-2 font-semibold text-white dark:text-black"
+						on:click={() => {
+							addWinners();
+						}}>Save changes</Dialog.Close
+					>
+				</Dialog.Footer>
+			</Dialog.Content>
+		</Dialog.Root>
 		<Button
 			class="mt-4"
 			on:click={() => {
