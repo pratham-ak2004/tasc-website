@@ -30,8 +30,8 @@
 			}
 		],
 		merchantInfo: {
-			merchantId: 'BCR2DN4TSP3JRFCS',
-			merchantName: 'Tasc'
+			merchantId: 'BCR2DN4T26TI57YY',
+			merchantName: 'Pratham'
 		},
 		transactionInfo: {
 			totalPriceStatus: 'FINAL',
