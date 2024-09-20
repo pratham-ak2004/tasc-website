@@ -82,5 +82,8 @@
   "trustedDependencies": [
     "protobufjs",
     "svelte-preprocess"
-  ]
+  ],
+  "engines": {
+    "node": "<=18"
+  }
 }

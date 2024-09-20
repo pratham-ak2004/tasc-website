@@ -13,7 +13,7 @@ const config = {
 		// See https://kit.svelte.dev/docs/adapters for more information about adapters.
 		adapter: adapter({
 			vercel: {
-				runtime: 'nodejs16.x'
+				runtime: 'nodejs18.x'
 			}
 		})
 	}
