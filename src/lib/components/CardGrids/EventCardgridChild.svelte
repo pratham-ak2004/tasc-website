@@ -6,6 +6,7 @@
 	import { onMount } from 'svelte';
 	import * as Dialog from '$lib/components/ui/dialog-publications';
 	import { exclaim, failure, success } from '$lib/components/Toast/toast';
+
 	export let event;
 	export let eventType: string;
 
@@ -53,57 +54,52 @@
 		<div class="dark:custom-shadow-black bg-muted-light dark:bg-muted-dark e m-auto w-full rounded-lg bg-[rgba(110,119,160,0.09)] px-5 py-6 shadow-xl backdrop-blur-sm dark:drop-shadow-md md:flex">
 			<div class=" justify-center">
 				{#if event.image}
-					<img src={event?.image} alt={event.title} class="border-muted-light mb-2 dark:border-muted-dark m-auto border object-cover" />
+					<img src={event?.image} alt={event.title} class=" m-auto h-72 w-72 object-contain" />
 				{/if}
 			</div>
-			<div>
-				<h1 class="py-4 text-center text-2xl font-bold">{event.title}</h1>
-				{#if event.date}
-					<h2 class="text-center text-lg">Date: {event.date.toLocaleDateString(undefined, options)}</h2>
-				{/if}
-				{#if event.time}
-					<h2 class="text-center text-lg">Time: {event.time}</h2>
-				{/if}
-				{#if event.venue}
-					<h2 class="text-center text-lg">Venue: {event?.venue}</h2>
-				{/if}
-			</div>
-			<!-- <hr class="my-2 border-b border-white" /> -->
-			<!-- <div>
-				<h1 class="text-center text-xl font-bold">Description</h1>
-				<p class="text-md text-center">{event.description}</p>
-			</div> -->
-
-			{#if registered}
-				<p class="mt-3 text-center text-green-400">You have already registered for the event</p>
-			{/if}
-			<div class="flex justify-center space-x-2 pt-4">
-				{#if !registered}
-					<button on:click={() => goto(`/events/register/${event.id}`)} class="rounded-md bg-[rgb(207,85,247)] px-3 py-1">Register</button>
-				{/if}
-				<Dialog.Root>
-					<Dialog.Trigger class="rounded-md bg-[rgb(207,85,247)] px-3 py-1">
-						<!-- <h1 class=" md:text-md text-center text-xs font-semibold hover:cursor-pointer hover:underline sm:text-sm lg:text-lg">{paper.title}</h1> -->
-						View Details
-					</Dialog.Trigger>
-					<Dialog.Content class="w-full md:w-2/3 overflow-y-scroll">
-						<div class="grid justify-around">
-							<div class="relative flex flex-col md:flex-row">
-								{#if event.image}
-									<img src={event?.image} alt={event.title} class="border-muted-light dark:border-muted-dark m-auto h-auto w-auto border object-cover md:w-1/2" />
-								{/if}
-								<div class="mx-3 flex flex-col text-nowrap">
-									<h1 class="md:pb-12 pb-4 mt-4 text-2xl md:text-3xl font-bold">{event.title}</h1>
-									<div class="flex h-full flex-col content-start">
-										{#if event.date}
-											<h2 class="text-sm sm:text-md md:text-lg lg:text-xl"><span class="font-bold">Date:</span> {event.date.toLocaleDateString(undefined, options)}</h2>
-										{/if}
-										{#if event.time}
-											<h2 class="text-sm sm:text-md md:text-lg lg:text-xl"><span class="font-bold">Time:</span> {event.time}</h2>
-										{/if}
-										{#if event.venue}
-											<h2 class="text-sm sm:text-md md:text-lg lg:text-xl"><span class="font-bold">Venue:</span> {event?.venue}</h2>
-										{/if}
+			<div class="w-full px-10 text-lg h-full">
+				<h1 class="mb-5 text-center text-5xl font-bold">{event.title}</h1>
+				<div class="flex-col m-autoo">
+					<p class=""><span class="font-bold">Description: </span>{event.brief}</p>
+					{#if event.date}
+						<h2 class="mt-1">Date: {event.date.toLocaleDateString(undefined, options)}</h2>
+					{/if}
+					{#if event.time}
+						<h2 class="mt-1">Time: {event.time}</h2>
+					{/if}
+					{#if event.venue}
+						<h2 class="mt-1">Venue: {event?.venue}</h2>
+					{/if}
+					{#if registered}
+						<p class="mt-3 text-center text-green-400">You have already registered for the event</p>
+					{/if}
+				</div>
+				<div class="flex justify-center space-x-2 pt-4">
+					<!-- {#if !registered}
+						<button on:click={() => goto(/events/register/${event.id})} class="rounded-md bg-[rgb(207,85,247)] px-3 py-1">Register</button>
+					{/if} -->
+					<!-- <Dialog.Root>
+						<Dialog.Trigger class="rounded-md bg-[rgb(207,85,247)] px-3 py-1">							View Details
+						</Dialog.Trigger>
+						<Dialog.Content class="w-full overflow-y-scroll md:w-2/3">
+							<div class="grid justify-around">
+								<div class="relative flex flex-col md:flex-row">
+									{#if event.image}
+										<img src={event?.image} alt={event.title} class="border-muted-light dark:border-muted-dark m-auto h-auto w-auto border object-cover md:w-1/2" />
+									{/if}
+									<div class="text-nowrap mx-3 flex flex-col">
+										<h1 class="pb-2 text-2xl font-bold sm:pb-12 md:text-3xl">{event.title}</h1>
+										<div class="grid h-full sm:justify-around">
+											{#if event.date}
+												<h2 class="sm:text-md text-sm md:text-lg lg:text-xl"><span class="font-bold">Date:</span> {event.date.toLocaleDateString(undefined, options)}</h2>
+											{/if}
+											{#if event.time}
+												<h2 class="sm:text-md text-sm md:text-lg lg:text-xl"><span class="font-bold">Time:</span> {event.time}</h2>
+											{/if}
+											{#if event.venue}
+												<h2 class="sm:text-md text-sm md:text-lg lg:text-xl"><span class="font-bold">Venue:</span> {event?.venue}</h2>
+											{/if}
+										</div>
 									</div>
 								</div>
 								<br />
