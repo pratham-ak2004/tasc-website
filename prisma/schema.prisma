@@ -157,12 +157,19 @@ model Team {
 model Winners {
   id String @id @default(cuid())
 
-  position Int
-  teamId   String @unique
-  eventId  String
+  position WinnerType
+
+  teamId  String @unique
+  eventId String
 
   event Event @relation(fields: [eventId], references: [id])
   team  Team  @relation(fields: [teamId], references: [id])
+}
+
+enum WinnerType {
+  WINNERS
+  FIRST_RUNNER_UP
+  SECOND_RUNNER_UP
 }
 
 model Student {
