@@ -24,14 +24,14 @@
 					type: 'PAYMENT_GATEWAY',
 					parameters: {
 						gateway: 'checkoutltd',
-						gatewayMerchantId: 'pk_sbox_nztz4o6mzmvxud2ced66n6nm7ex'
+						gatewayMerchantId: 'Channel 1 (ID: pc_bpoclsnrnlfexiw2lohkjr2cwu)'
 					}
 				}
 			}
 		],
 		merchantInfo: {
-			merchantId: 'BCR2DN4T26TI57YY',
-			merchantName: 'Pratham'
+			merchantId: 'BCR2DN4T27PODAAE',
+			merchantName: 'Test'
 		},
 		transactionInfo: {
 			totalPriceStatus: 'FINAL',
