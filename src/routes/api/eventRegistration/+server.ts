@@ -11,7 +11,8 @@ export async function GET({ url }) {
             user: {
                 some: { id: studentId }
             }
-        }
+        },
+        include: { user: true }
     })
     
     if (registration) {
@@ -25,7 +26,7 @@ export async function POST({ request }) {
     const data = await request.json();
 
     if (data.userCreate) {
-        const user = await db.user.update({
+        await db.user.update({
             where: { id: data.userId },
             data: {
                 displayName: data.userName,
@@ -81,15 +82,38 @@ export async function POST({ request }) {
 
 export async function DELETE({request}){
     const data=await request.json()
-    const deleteMember = await db.team.update({
+    
+    if(data.choice === 'remove' || data.choice === 'leave') {
+        const deleteMember = await db.team.update({
+            where: {
+                id: data.teamId
+            },
+            data: {
+                user: {
+                    disconnect: { id: data.userId }
+                }
+            }
+        })
+        return new Response(JSON.stringify({ success: true, deleteMember, choice: data.choice }),{status:201})
+    } else if(data.choice === 'delete') {
+        const deleteTeam = await db.team.delete({
+            where: {
+                id: data.teamId
+            }
+        })
+        return new Response(JSON.stringify({ success: true, deleteTeam, choice: data.choice }),{status:201})
+    }
+}
+
+export async function PATCH({request}){
+    const data=await request.json()
+    const updateTeam = await db.team.update({
         where: {
             id: data.teamId
         },
         data: {
-            user: {
-                disconnect: { id: data.userId }
-            }
+            isConfirmed: true
         }
     })
-    return new Response(JSON.stringify({success:true,deleteMember}),{status:201})
+    return new Response(JSON.stringify({ success: true, updateTeam }),{status:201})
 }

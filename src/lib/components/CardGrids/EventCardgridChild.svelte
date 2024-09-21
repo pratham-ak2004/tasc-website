@@ -1,13 +1,13 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { user } from '$lib/auth/stores';
-	import Input from '$lib/components/ui/input/input.svelte';
-	import { marked } from 'marked';
+	import { Crown } from 'lucide-svelte';
 	import { onMount } from 'svelte';
-	import * as Dialog from '$lib/components/ui/dialog-publications';
-	import { exclaim, failure, success } from '$lib/components/Toast/toast';
+	import * as Dialog from '$lib/components/ui/dialog';
+	import { exclaim, success } from '$lib/components/Toast/toast';
+	import Button from '../ui/button/button.svelte';
 
-	export let event;
+	export let event: any;
 	export let eventType: string;
 
 	const options: Intl.DateTimeFormatOptions = {
@@ -16,8 +16,8 @@
 		year: 'numeric'
 	};
 	let registered: boolean = false;
-	let teamName = '';
-	let teamId = '';
+	let team: any;
+	let teamMembers: any;
 
 	onMount(async () => {
 		if (eventType === 'upcoming' && $user) {
@@ -28,23 +28,61 @@
 				}
 			});
 			const data = await response.json();
-			teamName = data.registration.name;
-			teamId = data.registration.id;
+			team = data.registration;
+			teamMembers = data.registration.user
 
 			registered = data.isExists;
 		}
 	});
 
-	const copyToClipboard = () => {
-		if (teamName && teamId) {
-			navigator.clipboard
-				.writeText(teamId)
-				.then(() => {
-					exclaim('Team ID copied to clipboard');
-				})
-				.catch(() => {
-					failure('Failed to copy Team ID to clipboard');
-				});
+	function copyToClipboard(text: string) {
+		navigator.clipboard
+			.writeText(text)
+			.then(() => {
+				exclaim('Copied to clipboard');
+			})
+			.catch((err) => {
+				console.error('Failed to copy: ', err);
+			});
+	}
+	const deleteTeamMember = async (choice: string, id?: string) => {
+		const response = await fetch('/api/eventRegistration', {
+			method: 'DELETE',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({
+				teamId: team.id,
+				userId: id ?? null,
+				choice: choice
+			})
+		});
+		const res = await response.json();
+		if (res.success) {
+			if (res.choice === 'leave')
+				exclaim('You have left the team');
+			else if (res.choice === 'remove')
+				exclaim('Member removed successfully');
+			else if (res.choice === 'delete')
+				exclaim('Team deleted successfully');
+			window.location.reload();
+		}
+	};
+
+	const confirmTeam = async () => {
+		const response = await fetch('/api/eventRegistration', {
+			method: 'PATCH',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({
+				teamId: team.id,
+			})
+		});
+		const res = await response.json();
+		if (res.success) {
+			success('Team confirmed successfully');
+			window.location.reload();
 		}
 	};
 </script>
@@ -71,7 +109,68 @@
 						<h2 class="mt-1">Venue: {event?.venue}</h2>
 					{/if}
 					{#if registered}
-						<p class="mt-3 text-center text-green-400">You have already registered for the event</p>
+						{#if event.type === 'TEAM' && team}
+							<Dialog.Root>
+								<Dialog.Trigger>
+									<div class="rounded-xl bg-brand px-5 py-3 text-2xl text-white duration-200 hover:scale-110 max-sm:text-xl self-center">Team Details</div>
+								</Dialog.Trigger>
+								<Dialog.Content class="max-w-[80%]">
+									<div class={`h-5 w-5 ${team.isConfirmed ? 'bg-green-600' : 'bg-red-600'} absolute rounded-full top-4 left-4`}></div>
+									<Dialog.Title class="text-3xl text-center text-bold">Team Details</Dialog.Title>
+									<div class="lg:grid lg:grid-cols-9">
+										<div class="col-span-4 lg:border-r-4 sm:p-5 justify-evenly flex flex-col w-full">
+											<div class="w-full">
+												<p class="sm:text-2xl text-xl font-semibold">Team Name</p>
+												<p class="sm:text-2xl text-xl ">{team.name}</p>
+											</div>
+											<br />
+											<div class="w-full">
+												<p class="sm:text-2xl text-xl font-semibold">Team ID</p>
+												<div class="sm:text-2xl text-xl flex justify-between">
+													<p>{team.id}</p>
+													<button on:click={() => copyToClipboard(team.id)}
+														><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" class=" stroke-black"><path fill="white" d="M15.24 2h-3.894c-1.764 0-3.162 0-4.255.148c-1.126.152-2.037.472-2.755 1.193c-.719.721-1.038 1.636-1.189 2.766C3 7.205 3 8.608 3 10.379v5.838c0 1.508.92 2.8 2.227 3.342c-.067-.91-.067-2.185-.067-3.247v-5.01c0-1.281 0-2.386.118-3.27c.127-.948.413-1.856 1.147-2.593s1.639-1.024 2.583-1.152c.88-.118 1.98-.118 3.257-.118h3.07c1.276 0 2.374 0 3.255.118A3.6 3.6 0 0 0 15.24 2" /><path fill="white" d="M6.6 11.397c0-2.726 0-4.089.844-4.936c.843-.847 2.2-.847 4.916-.847h2.88c2.715 0 4.073 0 4.917.847S21 8.671 21 11.397v4.82c0 2.726 0 4.089-.843 4.936c-.844.847-2.202.847-4.917.847h-2.88c-2.715 0-4.073 0-4.916-.847c-.844-.847-.844-2.21-.844-4.936z" /></svg></button
+													>
+												</div>
+											</div>
+											<br />
+										</div>
+										<div class="col-span-5 sm:p-5 w-full">
+											<p class="sm:text-2xl text-xl font-semibold pb-5">Team Members</p>
+											<div class="grid grid-cols-5 pb-2">
+												<img src={teamMembers.find(member => member.id === team.leaderId)?.image} alt="profile-img" class="my-auto sm:h-12 h-9 sm:w-12 w-9 rounded-full col-span-1 justify-self-center" />
+												<p class="col-span-3 sm:text-xl text-lg self-center">{teamMembers.find(member => member.id === team.leaderId)?.displayName}</p>
+												<Crown class="stroke-yellow-500 self-center justify-self-center" size="40" />
+											</div>
+											{#each teamMembers as member}
+												{#if member.id !== team.leaderId}
+													<div class="grid grid-cols-5 pb-2 w-full">
+														<img src={member.image} alt="profile-img" class="my-auto sm:h-12 h-9 sm:w-12 w-9 rounded-full col-span-1 justify-self-center" />
+														<p class="col-span-3 sm:text-xl text-lg self-center">{member.displayName}</p>
+														{#if !team.isConfirmed && $user?.id === team.leaderId}
+															<Button class="bg-red-600 text-white sm:text-lg text-sm hover:text-black" on:click={() => deleteTeamMember('remove', member?.id)}>Remove</Button>
+														{/if}
+													</div>
+												{/if}
+											{/each}
+										</div>
+									</div>
+									{#if !team.isConfirmed && $user?.id === team.leaderId}
+										<div class="flex justify-evenly w-full py-5">
+											<Button class="bg-red-500 text-white sm:text-xl text-md sm:w-[20%] hover:text-black" on:click={() => deleteTeamMember('delete')}>Leave team</Button>
+											<Button class="bg-green-500 text-white sm:text-xl text-md sm:w-[20%] hover:text-black" on:click={() => confirmTeam()}>Confirm team</Button>
+										</div>
+									{/if}
+									{#if !team.isConfirmed && !$user?.id === team.leaderId}
+										<div class="flex justify-evenly w-full py-5">
+											<Button class="bg-red-500 text-white sm:text-lg text-sm sm:w-[20%] hover:text-black" on:click={() => deleteTeamMember('leave', $user?.id)}>Leave team</Button>
+										</div>
+									{/if}
+								</Dialog.Content>
+							</Dialog.Root>
+						{:else}
+							<p class="mt-3 text-center text-green-400">You have already registered for the event</p>
+						{/if}
 					{/if}
 				</div>
 				<div class="flex justify-center space-x-2 pt-4">
