@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -39,8 +33,10 @@ model User {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  Core      Core[]
-  Team      Team[]   @relation("UserTeam")
+
+  Core    Core[]
+  Student Student[]
+  Team    Team[]    @relation("UserTeam")
 }
 
 model Account {
@@ -74,6 +70,16 @@ model Session {
   updatedAt DateTime @updatedAt
 }
 
+model Student {
+  id String @id @default(cuid())
+
+  name      User       @relation(fields: [userId], references: [id])
+  userId    String     @unique
+  image     String
+  placement Placement?
+  patents   Patents[]  @relation("StudentPatents")
+}
+
 model Core {
   id    String  @id @default(cuid())
   year  String
@@ -87,13 +93,15 @@ model Core {
 }
 
 model Faculty {
-  id           String        @id @default(cuid())
+  id String @id @default(cuid())
+
   name         String
   email        String
   designation  String
   designation2 String?
   image        String
   about        String[]
+
   patents      Patents[]     @relation("FacultyPatents")
   publications Publication[] @relation("FacultyPublications")
   order        Int           @unique
@@ -151,7 +159,8 @@ model Team {
   winner        Winners?
   attended      Boolean  @default(false)
 
-  eventId String
+  eventId        String
+  isConfirmed    Boolean @default(false)
 }
 
 model Winners {
@@ -166,18 +175,39 @@ model Winners {
   team  Team  @relation(fields: [teamId], references: [id])
 }
 
-enum WinnerType {
-  WINNERS
-  FIRST_RUNNER_UP
-  SECOND_RUNNER_UP
-}
-
-model Student {
+model Placement {
   id String @id @default(cuid())
 
-  name    String
-  image   String
-  patents Patents[] @relation("StudentPatents")
+  offers Offer[]
+
+  year      Year    @relation("PlacementYear", fields: [yearId], references: [id])
+  yearId    String
+  student   Student @relation(fields: [studentId], references: [id])
+  studentId String  @unique
+}
+
+model Company {
+  id String @id @default(cuid())
+
+  companyName String
+  offers      Offer[]
+}
+
+model Offer {
+  id String @id @default(cuid())
+
+  placements Placement[]
+  company    Company     @relation(fields: [companyId], references: [id])
+  companyId  String
+  package    String
+}
+
+model Year {
+  id String @id @default(cuid())
+
+  year       String
+  companies  String[]
+  placements Placement[] @relation("PlacementYear")
 }
 
 model Patents {
