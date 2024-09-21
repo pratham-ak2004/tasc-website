@@ -159,16 +159,17 @@ model Team {
   winner        Winners?
   attended      Boolean  @default(false)
 
-  eventId        String
-  isConfirmed    Boolean @default(false)
+  eventId     String
+  isConfirmed Boolean @default(false)
 }
 
 model Winners {
   id String @id @default(cuid())
 
-  position Int
-  teamId   String @unique
-  eventId  String
+  position WinnerType
+
+  teamId  String @unique
+  eventId String
 
   event Event @relation(fields: [eventId], references: [id])
   team  Team  @relation(fields: [teamId], references: [id])
@@ -254,4 +255,11 @@ enum EventCategory {
   PREVIOUS
   UPCOMING
   CURRENT
+}
+
+enum WinnerType {
+  FIRST
+  SECOND
+  THIRD
+  PARTICIPATION
 }
