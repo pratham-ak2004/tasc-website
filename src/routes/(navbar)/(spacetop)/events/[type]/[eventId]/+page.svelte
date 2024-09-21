@@ -2,7 +2,7 @@
 	import { page } from '$app/stores';
 	import { exclaim } from '$lib/components/Toast/toast';
 	import { onMount } from 'svelte';
-	import { MapPin, CalendarCheck2, Ticket  } from 'lucide-svelte';
+	import { MapPin, CalendarCheck2, Ticket } from 'lucide-svelte';
 	import { marked } from 'marked';
 
 	const event = $page.data.event;
@@ -74,24 +74,24 @@
 		</div>
 		<br />
 
-		<div class="flex flex-col md:flex-row justify-center gap-2 px-8 sm:flex-row sm:p-0">
+		<div class="flex flex-col justify-center gap-2 px-8 sm:flex-row sm:p-0 md:flex-row">
 			{#if event.venue}
-				<div class="tex-white flex basis-1/3 flex-nowrap place-content-center items-center gap-4 rounded-lg border-2 border-slate-500 p-2 py-4 text-xl font-semibold">
+				<div class="event-details-light event-details-dark flex basis-1/3 flex-nowrap items-center justify-center gap-4 rounded-lg border-2 border-slate-500 p-2 py-4 text-xl font-semibold transition-all">
 					<MapPin class="stroke-red-500" />
 					<p>{event.venue}</p>
 				</div>
 			{/if}
 
 			{#if event.entryFee}
-				<div class="tex-white flex basis-1/3 flex-nowrap place-content-center items-center gap-4 rounded-lg border-2 border-slate-500 p-2 py-4 text-xl font-semibold">
-					<Ticket class="stroke-orange-400"/>
-					<p>Entry Fee : {event.entryFee ? "₹"+event.entryFee : "Free"}</p>
+				<div class="event-details-light event-details-dark flex basis-1/3 flex-nowrap items-center justify-center gap-4 rounded-lg border-2 border-slate-500 p-2 py-4 text-xl font-semibold transition-all">
+					<Ticket class="stroke-orange-600" />
+					<p>Entry Fee : {event.entryFee ? '₹' + event.entryFee : 'Free'}</p>
 				</div>
 			{/if}
 
 			{#if event.date}
-				<div class="tex-white flex basis-1/3 flex-nowrap justify-center items-center gap-4 rounded-lg border-2 border-slate-500 p-2 py-4 text-xl font-semibold">
-					<CalendarCheck2 class="stroke-blue-600"/>
+				<div class="tex-white event-details-light event-details-dark flex basis-1/3 flex-nowrap items-center justify-center gap-4 rounded-lg border-2 border-slate-500 p-2 py-4 text-xl font-semibold transition-all">
+					<CalendarCheck2 class="stroke-blue-600" />
 					<div>
 						<p>{formatDate(event.date)}</p>
 						<p>{event.time}</p>
@@ -99,7 +99,7 @@
 				</div>
 			{/if}
 		</div>
-		<div class="mt-5 flex items-center">
+		<div class="mt-10 flex items-center justify-center">
 			{#if team}
 				<button class="rounded-xl bg-gray-500 px-5 py-3 text-2xl text-white max-lg:mx-auto max-sm:text-xl" disabled> Registered </button>
 			{:else}
@@ -168,11 +168,19 @@
 		}
 	}
 
-	::-webkit-scrollbar {
-		width: 8px;
+	.event-details-light {
+		@apply bg-slate-500 bg-opacity-50;
 	}
-	::-webkit-scrollbar-thumb {
-		background-color: #4b5563;
-		border-radius: 10px;
+
+	.event-details-light:hover {
+		@apply bg-opacity-100 text-white;
+	}
+
+	.event-details-dark:is(.dark *) {
+		@apply bg-slate-700 bg-opacity-50;
+	}
+
+	.event-details-dark:hover:is(.dark *) {
+		@apply bg-white bg-opacity-100 text-black;
 	}
 </style>
