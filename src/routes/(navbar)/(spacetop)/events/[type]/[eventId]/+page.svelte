@@ -103,22 +103,22 @@
 		<br />
 		<div class="flex flex-col justify-center lg:justify-evenly gap-2 px-8 sm:flex-row sm:p-0 md:flex-row">
 			{#if event.venue}
-				<div class={`event-details-light event-details-dark flex ${event.entryFee ? 'basis-1/3' : 'basis-2/5'} flex-nowrap items-center justify-center gap-4 rounded-lg border-2 border-slate-500 p-2 py-4 text-xl font-semibold transition-all duration-500`}>
-					<MapPin class="stroke-red-500" size="30" />
+				<div class={`event-details-light event-details-dark backdrop-blur-[3px] flex ${event.entryFee ? 'basis-1/3' : 'basis-2/5'} flex-nowrap items-center justify-center gap-4 rounded-lg border-2 border-slate-500 p-2 py-4 text-xl font-semibold transition-all duration-500`}>
+					<MapPin class="dark:stroke-red-700 stroke-red-500" size="30" />
 					<p>{event.venue}</p>
 				</div>
 			{/if}
 
 			{#if event.entryFee}
-				<div class="event-details-light event-details-dark flex basis-1/3 flex-nowrap items-center justify-center gap-4 rounded-lg border-2 border-slate-500 p-2 py-4 text-xl font-semibold transition-all duration-500">
-					<Ticket class="stroke-red-800" size="30" />
-					<p>Entry Fee : {event.entryFee ? '₹' + event.entryFee : 'Free'}</p>
+				<div class="event-details-light event-details-dark flex backdrop-blur-[3px] basis-1/3 flex-nowrap items-center justify-center gap-4 rounded-lg border-2 border-slate-500 p-2 py-4 text-xl font-semibold transition-all duration-500">
+					<Ticket class="dark:stroke-green-700 stroke-green-400" size="30" />
+					<p>{event.entryFee ? '₹' + event.entryFee : 'Free'} per head</p>
 				</div>
 			{/if}
 
 			{#if event.date}
-				<div class={`event-details-light event-details-dark flex ${event.entryFee ? 'basis-1/3' : 'basis-2/5'} flex-nowrap items-center justify-center gap-4 rounded-lg border-2 border-slate-500 p-2 py-4 text-xl font-semibold transition-all duration-500`}>
-					<CalendarCheck2 class="stroke-blue-600" size="30" />
+				<div class={`event-details-light event-details-dark backdrop-blur-[3px] flex ${event.entryFee ? 'basis-1/3' : 'basis-2/5'} flex-nowrap items-center justify-center gap-4 rounded-lg border-2 border-slate-500 p-2 py-4 text-xl font-semibold transition-all duration-500`}>
+					<CalendarCheck2 class="dark:stroke-blue-700 stroke-blue-500" size="30" />
 					<div>
 						<p>{formatDate(event.date)}</p>
 						<p>{event.time}</p>
@@ -135,8 +135,7 @@
 		<br />
 		
 		<div class="lg:mt-10 flex justify-around">
-			{#if team}
-				<button class="rounded-xl bg-gray-500 px-5 py-3 text-2xl text-white max-lg:mx-auto max-sm:text-xl" disabled> Registered </button>
+			{#if team && event.type === 'TEAM'}
 				<Dialog.Root>
 					<Dialog.Trigger>
 						<div class="rounded-xl bg-brand px-5 py-3 text-2xl text-white duration-200 hover:scale-110 max-sm:text-xl self-center">Team Details</div>
@@ -195,6 +194,8 @@
 						{/if}
 					</Dialog.Content>
 				</Dialog.Root>
+			{:else if team && event.type === 'SOLO'}
+				<p class="text-center lg:text-2xl md:text-xl text-lg dark:text-green-400 text-green-600">You have already registered for the event</p>
 			{:else}
 				<button class="rounded-xl bg-brand px-5 py-3 text-2xl text-white duration-200 hover:scale-110 max-sm:text-xl" on:click={() => goto(`/events/upcoming/${event.id}/register`)}> Register Now </button>
 			{/if}
