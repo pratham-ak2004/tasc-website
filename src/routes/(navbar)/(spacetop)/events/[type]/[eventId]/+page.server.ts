@@ -14,47 +14,30 @@ import { user } from '$lib/auth/stores';
 
 export const load = async (event) => {
 	const session = await event.locals.auth();
-	const id = session?.user?.id;
-	let teams;
-	let leaderId;
-
-	const eventId = event.url.pathname.split('/')[3];
 
 	const eventDetail = await db.event.findUnique({
 		where: {
-			id: eventId
+			id: event.params.eventId
 		}
 	});
 
-	
-	if (id) {
-		teams = await db.team.findMany({
-			where: {
-				user: {
-					some: {
-						id: id
-					}
+	const teams = await db.team.findFirst({
+		where: {
+			user: {
+				some: {
+					id: session?.user?.id
 				}
 			},
-			select: {
-				id: true,
-				name: true,
-				user: true,
-				event: true,
-				attended: true,
-				leaderId:true,
-			}
-		});
-		teams = teams?.at(0);
-		leaderId=teams?.leaderId
-		return {
-			teams: teams,
-			event: eventDetail,
-			leaderId:leaderId
-		};
-	}
+			eventId: event.params.eventId
+		},
+		include: {
+			user: true,
+			event: true,
+		}
+	});
 
 	return {
-		event: eventDetail
+		event: eventDetail,
+		teams: teams ?? null
 	};
 };

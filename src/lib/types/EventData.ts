@@ -4,6 +4,7 @@ export default interface EventData {
 	image: string;
 	date: Date;
 	time: string | null;
+	type: string | null;
 	venue: string | null;
 	description: string | null;
 	brief:string|null;

@@ -35,7 +35,6 @@
 	$: isValidTeamId = userInfo.teamId && reCUID.test(userInfo.teamId);
 	$: isTouchedTeamId = userInfo.teamId && userInfo.teamId.length >= 1;
 
-
 	$: isValidTransactionId = userInfo.transactionId && userInfo.transactionId.length >= 1 && reId.test(userInfo.transactionId);
 	$: isTouchedTransactionId = userInfo.transactionId && userInfo.transactionId.length >=1
 
@@ -138,7 +137,11 @@
 	};
 
 	// Reactive block to handle disabling button logic
-	$: disabled = !(userInfo.name && userInfo.phone && userInfo.usn) || (data.event.type === 'TEAM' && ((userInfo.team === 'create' && !userInfo.teamName && !userInfo.transactionId) || (userInfo.team === 'join' && !userInfo.teamId) || !userInfo.team));//dissabled not working for transactionId
+	$: disabled = !(userInfo.name && userInfo.phone && userInfo.usn) || 
+              (data.event.type === 'TEAM' && 
+               ((userInfo.team === 'create' && (!userInfo.teamName || !isValidTeamName || !userInfo.transactionId || !isValidTransactionId)) || 
+               (userInfo.team === 'join' && (!userInfo.teamId || !isValidTeamId)) || 
+               !userInfo.team));
 </script>
 
 <!-- HTML template -->
@@ -210,8 +213,8 @@
 							<QRCodeImage text={$page.data.event.qr} />
 						</div>
 						<br />
-						<label for="transactionId">Transaction ID</label>
-						<Input type="text" name="transactionId" placeholder="transaction Id" bind:value={userInfo.transactionId} class={!isValidTransactionId && isTouchedTransactionId ? 'bg-red-200 dark:bg-red-900' : ''} required />
+						<label for="transactionId">UPI Transaction ID</label>
+						<Input type="text" name="transactionId" placeholder="UPI Transaction Id" bind:value={userInfo.transactionId} class={!isValidTransactionId && isTouchedTransactionId ? 'bg-red-200 dark:bg-red-900' : ''} required />
 					</div>
 				{/if}
 			{:else if userInfo.team === 'join'}

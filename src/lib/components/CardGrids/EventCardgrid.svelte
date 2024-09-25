@@ -9,7 +9,7 @@
 	let includedMonths = [1, 2, 3, 4, 5, 6];
 </script>
 
-<div class="sm:mx-20 my-10 sm:px-10 px-5">
+<div class="lg:mx-20 my-10 sm:px-10 px-5">
 	{#if eventType ==='previous'}
 	<Accordion.Root value={openItem}>
 		<Accordion.Item value="item-2" class="border-b-2">
@@ -40,8 +40,8 @@
 		</Accordion.Item>
 	</Accordion.Root>
 	{:else}
-		<div class={`gap-10 lg:py-16`}>
-			<div class={` lg:mx-20 mx-5 gap-x-10  sm:gap-y-10`}>
+		<div>
+			<div class={` lg:mx-20 mx-5 gap-x-10 space-y-5 relative gap-10`}>
 				{#each events as event}
 						<EventCardgridChild {event} {eventType} />
 				{/each}
