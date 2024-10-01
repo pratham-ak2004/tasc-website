@@ -69,6 +69,7 @@
     "marked": "^14.1.2",
     "qrcode": "^1.5.4",
     "svelte-copy": "^1.4.1",
+    "svelte-qrcode-image": "2.0.0-alpha.1",
     "sveltekit-superforms": "^2.18.0",
     "tailwind-merge": "^1.14.0",
     "tailwind-variants": "^0.1.18",
